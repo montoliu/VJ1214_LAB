@@ -1,11 +1,11 @@
 \chapterimage{chapter_head_1.pdf} 
 \chapter{Fundamentos para programar la NDS}
 
-En este capítulo, se estudiarán los elementos básicos para poder realizar aplicaciones en NDS. En concreto, se estudiarán cuestiones relacionadas con la visualización de texto, la entrada de usuario (botones y pantalla táctil) y el temporizador. 
+En este capítulo, se estudiarán los elementos básicos para poder realizar aplicaciones en l consola NDS. En concreto, se estudiarán cuestiones relacionadas con la visualización de texto, la entrada de usuario (botones y pantalla táctil) y el temporizador. 
 
 Para obtener información sobre las funciones existentes, se recomienda ir a la página web: \url{http://libnds.devkitpro.org/}
 
-La lista de ejercicios y el tiempo estimado (en minutos) para su realización se muestran en la Tabla \ref{c3_tab:ejercios}.
+La lista de ejercicios a realizar y el tiempo estimado (en minutos) para su realización se muestran en la Tabla \ref{c3_tab:ejercios}.
 
 \begin{table}[t]
 \centering
@@ -14,16 +14,16 @@ La lista de ejercicios y el tiempo estimado (en minutos) para su realización se
 \hline 
 Ejercicio & Tiempo & Ejercicio & Tiempo  \\ 
 \hline 
- 3.1 & 30  & 3.11 & 20 \\ 
- 3.2 & 10  & 3.12 & 20 \\ 
- 3.3 & 5   & 3.13 & 10 \\ 
- 3.4 & 5   & 3.14 & 30 \\ 
- 3.5 & 10  & 3.15 & 10 \\ 
- 3.6 & 10  & 3.16 & 20 \\ 
- 3.7 & 20  & & \\ 
- 3.8 & 15  & & \\ 
- 3.9 & 15  & & \\ 
- 3.10 & 10 & & \\
+ 3.1 & 30'  & 3.11 & 20' \\ 
+ 3.2 & 10'  & 3.12 & 20' \\ 
+ 3.3 & 5'   & 3.13 & 10' \\ 
+ 3.4 & 5'   & 3.14 & 30' \\ 
+ 3.5 & 10'  & 3.15 & 10' \\ 
+ 3.6 & 10'  & 3.16 & 10' \\ 
+ 3.7 & 20'  & 3.17 & 10'\\ 
+ 3.8 & 15'  & & \\ 
+ 3.9 & 15'  & & \\ 
+ 3.10 & 10' & & \\
 \hline 
 \end{tabular} 
 \label{c3_tab:ejercios}
@@ -99,7 +99,7 @@ empleando como valor para la fila un entero entre 0 y 23, y el valor de la colum
 \end{figure}
 
 \begin{example}
-El siguiente código muestra el mensaje de texto \textit{Hola} en la fila 2, columna 5:
+El siguiente código muestra un mensaje de texto en la fila 2, columna 5:
 \begin{lstlisting}
 #include <nds.h>
 #include <stdio.h>
@@ -327,7 +327,7 @@ Los pasos a seguir para determinar las operaciones realizadas con los botones so
 
 El resultado de estas funciones se compara mediante una \textit{multiplicación bit a bit} con el valor del botón del que se quiere saber su estado. Como valores del botón cuyo estado se desea saber se puede emplear: 
 \begin{itemize}
-\item Los cuatro botones de la derecha: KEY\_A, KEY\_B, KEY\_X y KEY\_Y.
+\item Los cuatro botones de la derecha: KEY\_A, KEY\_B, KEY\_X, KEY\_Y.
 \item Los botones laterales \textit{L} y \textit{R}: KEY\_L, KEY\_R.
 \item Botones \textit{Select} y \textit{Start}: KEY\_SELECT, KEY\_START.
 \item La cruceta de 4 direcciones: KEY\_UP, KEY\_DOWN, KEY\_LEFT, KEY\_RIGHT.
@@ -519,4 +519,46 @@ La función \textit{timerElapsed} proporciona el número de ticks que se han pro
 Modifica el programa \textit{tiempo.c} para que finalice la cuenta si han transcurrido 15 segundos o si se ha pulsado el boton \textit{Y}.
 \end{exercise}
 
+En ocasiones se desea que ocurra un evento cada cierto tiempo. Por ejemplo, el siguiente código (eventos.c) mueve la letra \textit{X} hacia la derecha cada 2 segundos:
+
+\begin{lstlisting}
+#include <nds.h>
+#include <stdio.h>
+#include <time.h>
+
+#define TIMER_SPEED (BUS_CLOCK/1024)
+
+int main()
+{
+  consoleDemoInit();
+  uint ticks = 0;
+  int posicion = 0;
+  int segundos;
+  int proximo_cambio = 2;
+
+  timerStart(0, ClockDivider_1024, 0, NULL);
+
+  while (1)
+  {
+    ticks += timerElapsed(0);
+    segundos = (int) (ticks/TIMER_SPEED);
+
+    if (segundos >= proximo_cambio)
+    {
+      posicion = posicion + 1;
+      proximo_cambio = proximo_cambio + 2;
+    }
+    iprintf("\x1b[1;%dH ",posicion-1);
+    iprintf("\x1b[1;%dHX",posicion);
+    swiWaitForVBlank();
+  }
+  return 0;
+}
+\end{lstlisting}
+
+\begin{exercise}
+	Modifica el programa \textit{evento.c} para que la letra se mueva cada 3 segundos.
+\end{exercise}
+
+Es importante destacar que para programar este tipo de funcionalidad, es más conveniente el uso de interrupciones, tal como se verá posteriormente.
 
