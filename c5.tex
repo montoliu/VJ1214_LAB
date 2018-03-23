@@ -8,9 +8,11 @@ Este capítulo trata sobre la realización de videojuegos con gráficos en la co
 % -----------------------------------------------------
 % -----------------------------------------------------
 \section{Introducción}
-El hardware de vídeo de la Nintendo DS se compone de dos núcleos gráficos 2D, uno principal o main y otro secundario o sub, diferenciados únicamente en que el motor principal puede renderizar tanto la memoria de vídeo virtual sin utilizar el motor 2D, como mapas de bits de 256 colores, así como utilizar el motor 3D para el renderizado de alguno de sus fondos. Pero, ¿qué es un fondo? El concepto de fondo es básico para comprender cómo funcionan los modos de vídeo de la Nintendo DS y se puede entender como un concepto equivalente al de capa o layer utilizado por algunas aplicaciones de diseño gráfico para facilitar la composición de una imagen a partir de la superposición del contenido de las capas. Los núcleos gráficos de la Nintendo DS disponen de cuatro fondos, etiquetados como BG0, BG1, BG2 y BG3, cuya configuración dependerá del tipo de gráfico a representar.
+El hardware de vídeo de la Nintendo DS se compone de dos núcleos gráficos 2D, uno principal o \textit{main} y otro secundario o \textit{sub}, diferenciados únicamente en que el motor principal puede renderizar tanto la memoria de vídeo virtual sin utilizar el motor 2D, como mapas de bits de 256 colores, así como utilizar el motor 3D para el renderizado de alguno de sus fondos. 
 
-Un modo gráfico básicamente agrupa un conjunto de configuraciones para cada uno de los fondos. La Figura \ref{fig_c5_modulos} resume los modos disponibles para el núcleo principal y el secundario. Los seis primeros modos, Mode 0 a Mode 5, son comunes para los dos núcleos. Además, el núcleo principal cuenta con el Mode 6 y con el modo frame buffer.
+El concepto de fondo es básico para comprender cómo funcionan los modos de vídeo de la Nintendo DS y se puede entender como un concepto equivalente al de capa o layer utilizado por algunas aplicaciones de diseño gráfico para facilitar la composición de una imagen a partir de la superposición del contenido de las capas. Los núcleos gráficos de la Nintendo DS disponen de cuatro fondos, etiquetados como \textit{BG0}, \textit{BG1}, \textit{BG2} y \textit{BG3}, cuya configuración dependerá del tipo de gráfico a representar.
+
+Un modo gráfico básicamente agrupa un conjunto de configuraciones para cada uno de los fondos. La Figura \ref{fig_c5_modulos} resume los modos disponibles para el núcleo principal y el secundario. Los seis primeros modos, \textit{Mode 0} a \textit{Mode 5}, son comunes para los dos núcleos. Además, el núcleo principal cuenta con el \textit{Mode }6 y con el modo \textit{frame buffer}.
 
 \begin{figure}[t]
 	\centering
@@ -21,7 +23,7 @@ Un modo gráfico básicamente agrupa un conjunto de configuraciones para cada un
 
 Existen tres tipos diferentes de configuraciones para los fondos 2D, que son \textit{Text}, \textit{Rotation} y \textit{Extended Rotation} y el modo \textit{framebuffer} que pinta la imagen directamente sin utilizar fondos. A los modos \textit{Text} también se les llama modos teselados, y a los modos \textit{Rotation} también se les conoce como modos \textit{Rotoscale}.
 
-Las imágenes que se desean mostrar en la pantalla deben ser traducidas a contenido binario, que se guardará junto con el programa y que debe ser copiado en el \textit{banco de memoria VRAM (Video RAM)} en el que está mapeada la pantalla. Mapear la pantalla a un banco de memoria significa que a la pantalla se le asigna ese banco de memoria, de forma que lo que se haya escrito en ese banco de memoria será lo que se vea en la pantalla. 
+Las imágenes que se desean mostrar en la pantalla deben ser traducidas a contenido binario, que se guardará junto con el programa y que debe ser copiado en un \textit{banco de memoria VRAM (Video RAM)} que es donde está mapeada la pantalla. Mapear la pantalla a un banco de memoria significa que a la pantalla se le asigna ese banco de memoria, de forma que lo que se haya escrito en ese banco de memoria será lo que se vea en la pantalla. 
 
 La Nintendo DS tiene 9 bancos de memoria de vídeo, que se pueden usar con diferentes propósitos. Cada de uno de estos bancos de memoria está etiquetado desde \textit{VRAM\_A} hasta \textit{VRAM\_I}. La Tabla \ref{tab_c5_NivelesDeEjecución} muestra cada uno de los bancos de memoria VRAM con su tamaño y su dirección de memoria. La cantidad total de memoria de vídeo es de 656KB. 
 
@@ -55,10 +57,18 @@ VRAM\_I	& 16KB  &	0x68a0000\\
 \label{tab_c5_NivelesDeEjecución}
 \end{table}
 
+La Figura \ref{fig_c5_vram} muestra los bancos de memoria que se pueden usar en cada motor gráfico y para que fin. Por ejemplo, el banco \textit{VRAM C} se puede usar tanto por el motor \textit{main} como por el \textit{sub}. Sin embargo, el banco \textit{VRAM A} solo puede ser usado por el motor \textit{main}.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[height=9cm]{Figuras/C5/c5_vram.png}
+	\caption{Bancos de memoria y que motores, y para que fin, los pueden usar.}
+	\label{fig_c5_vram}
+\end{figure}
 % -------------------------------------------------------------
 % -------------------------------------------------------------
 \section{El registro \textit{REG\_POWERCNT}} 
-El registro \textit{REG\_POWERCNT} es el encargado del encendido de todo el hardware gráfico. La Figura \ref{c5_bits_reg_powercnt} muestra el significado de algunos de sus bits. El contenido de este registro permite activar ambas pantallas y los dos motores gráficos: el principal (main) y el secundario (sub) para trabajar en 2D. Además, el bit 15  permite intercambiar ambas pantallas y asignar  el motor principal a la pantalla superior (top) en vez de a la inferior que es la que tiene por defecto.
+El registro \textit{REG\_POWERCNT} es el encargado del encendido de todo el hardware gráfico. La Figura \ref{c5_bits_reg_powercnt} muestra el significado de algunos de sus bits. El contenido de este registro permite activar ambas pantallas y los dos motores gráficos: el principal (\textit{main}) y el secundario (\textit{sub}) para trabajar en 2D. Además, el bit 15  permite intercambiar ambas pantallas y asignar el motor principal a la pantalla superior (top) en vez de a la inferior que es la que tiene por defecto.
 
 \begin{figure}[h]
 \centering
@@ -76,6 +86,10 @@ Para activar ambas pantallas y ambos motores se puede usar la instrucción:
 \begin{verbatim}
 REG_POWERCNT = POWER_LCD | POWER_2D_A | POWER_2D_B;
 \end{verbatim}
+
+Se puede encontrar más información en la web: \url{http://libnds.devkitpro.org/system_8h.html}. 
+
+
 
 % -------------------------------------------------------------
 % -------------------------------------------------------------
@@ -101,10 +115,18 @@ Por ejemplo, para indicar que se activa el \textit{Modo 0} con el fondo \textit{
 REG_DISPCNT = MODE_0_2D | DISPLAY_BG0_ACTIVE;
 \end{verbatim}
 
-Esta operación también se puede llevar a cabo mediante la instrucción:
+Esta operación también se puede llevar a cabo, en el motor \textit{main}, mediante la instrucción:
 \begin{verbatim}
 videoSetMode(MODE_0_2D);
 \end{verbatim}
+
+Para el motor \textit{sub}, habrá que usar la instrucción:
+\begin{verbatim}
+videoSetModeSub(MODE_0_2D);
+\end{verbatim}
+
+Se puede encontrar más información en la web: \url{http://libnds.devkitpro.org/video_8h.html}. 
+
 
 % -------------------------------------------------------------
 % -------------------------------------------------------------
