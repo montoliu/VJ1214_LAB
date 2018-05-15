@@ -1,7 +1,7 @@
 \chapterimage{chapter_head_1.pdf} 
 \chapter{Fundamentos para programar la NDS}
 
-En este capítulo, se estudiarán los elementos básicos para poder realizar aplicaciones en l consola NDS. En concreto, se estudiarán cuestiones relacionadas con la visualización de texto, la entrada de usuario (botones y pantalla táctil) y el temporizador. 
+En este capítulo, se estudiarán los elementos básicos para poder realizar aplicaciones en la consola NDS. En concreto, se estudiarán cuestiones relacionadas con la visualización de texto, la entrada de usuario (botones y pantalla táctil) y el temporizador. 
 
 Para obtener información sobre las funciones existentes, se recomienda ir a la página web: \url{http://libnds.devkitpro.org/}
 
@@ -14,16 +14,15 @@ La lista de ejercicios a realizar y el tiempo estimado (en minutos) para su real
 \hline 
 Ejercicio & Tiempo & Ejercicio & Tiempo  \\ 
 \hline 
- 3.1 & 30'  & 3.11 & 20' \\ 
- 3.2 & 10'  & 3.12 & 20' \\ 
- 3.3 & 5'   & 3.13 & 10' \\ 
- 3.4 & 5'   & 3.14 & 30' \\ 
- 3.5 & 10'  & 3.15 & 10' \\ 
- 3.6 & 10'  & 3.16 & 10' \\ 
- 3.7 & 20'  & 3.17 & 10'\\ 
- 3.8 & 15'  & & \\ 
- 3.9 & 15'  & & \\ 
- 3.10 & 10' & & \\
+ 3.1 & 30' & 3.10 & 10' \\ 
+ 3.2 & 10' & 3.11 & 20' \\ 
+ 3.3 & 5'  & 3.12 & 20' \\ 
+ 3.4 & 5'  & 3.13 & 10' \\ 
+ 3.5 & 10' & 3.14 & 30' \\ 
+ 3.6 & 10' & 3.15 & 10' \\ 
+ 3.7 & 20' & 3.16 & 10' \\ 
+ 3.8 & 15' & 3.17 & 10' \\ 
+ 3.9 & 15' &      & \\ 
 \hline 
 \end{tabular} 
 \label{c3_tab:ejercios}
@@ -74,7 +73,7 @@ int main(void) {
 
 
 \begin{exercise}
-	Crea un nuevo proyecto usando el código anterior para comprobar que tienes bien instalado todo lo necesario para compilar y ejecutar juegos en la NDS. El cápitulo 2 está dedicado a explicar todos los pasos que hay que seguir. 
+	Crea un nuevo proyecto usando el código anterior para comprobar que tienes bien instalado todo lo necesario para compilar y ejecutar juegos en la NDS. El capítulo 2 está dedicado a explicar todos los pasos que hay que seguir. 
 \end{exercise}
 
  ---------------------------------------------------------
@@ -128,6 +127,7 @@ Realiza un programa que muestre tres mensajes de texto en varias posiciones dife
 % ---------------------------------------------------------
 % ---------------------------------------------------------
 \subsection{Control de las pantallas a utilizar}
+\begin{example}
 El siguiente programa (\textit{superior.c}) crea una consola para escribir en la pantalla superior:
 \begin{lstlisting}
 #include <nds.h>
@@ -155,6 +155,7 @@ int main(void)
   return 0;
 }
 \end{lstlisting}
+\end{example}
 
 En este código cabe destacar lo siguiente:
 \begin{itemize}
@@ -169,7 +170,10 @@ En este código cabe destacar lo siguiente:
 Crea un nuevo proyecto, usando el programa \textit{superior.c} y comprueba que el resultado obtenido es el esperado.
 \end{exercise}
 
-Para usar más de una consola, se deben seguir los pasos del ejemplo anterior, pero además se debe emplear la función \textit{consoleSelect} para indicar qué consola se va a usar. El siguiente programa (\textit{dos\_pantallas.c}) escribe un mensaje en cada una de las pantallas:
+Para usar más de una consola, se deben seguir los pasos del ejemplo anterior, pero además se debe emplear la función \textit{consoleSelect} para indicar qué consola se va a usar. 
+
+\begin{example}
+El siguiente programa (\textit{dos\_pantallas.c}) escribe un mensaje en cada una de las pantallas:
 
 \begin{lstlisting}
 #include <nds.h>
@@ -208,6 +212,7 @@ int main(void)
   return 0;
 }
 \end{lstlisting}
+\end{example}
 
 \begin{exercise}
 Comprueba mediante la creación de un nuevo proyecto, usando el programa \textit{dos\_pantallas.c} que lo indicado ocurre tal y como se comenta. La Figura \ref{p3_c2_dos_pantallas} muestra la salida esperada.
@@ -215,7 +220,7 @@ Comprueba mediante la creación de un nuevo proyecto, usando el programa \textit
 
 
 \begin{exercise}
-	Realiza un programa que muestre tres mensajes en la pantalla superior y otros tres en la pantalla superior.
+	Realiza un programa que muestre tres mensajes en la pantalla superior y otros tres en la pantalla inferior.
 \end{exercise}
 
 \begin{figure}[t]
@@ -228,7 +233,10 @@ Comprueba mediante la creación de un nuevo proyecto, usando el programa \textit
 % ---------------------------------------------------------
 % ---------------------------------------------------------
 \section{Teclado}
-La Nintendo DS tiene la posibilidad de simular el funcionamiento de un teclado empleando funciones de la biblioteca \textit{libnds}. El siguiente programa (\textit{teclado.c}) muestra como funciona el acceso al teclado:
+La Nintendo DS tiene la posibilidad de simular el funcionamiento de un teclado empleando funciones de la biblioteca \textit{libnds}.
+
+\begin{example}
+El siguiente programa (\textit{teclado.c}) muestra como funciona el acceso al teclado:
 
 \begin{lstlisting}
 #include <nds.h>
@@ -253,6 +261,7 @@ int main(void) {
   return 0;
 }
 \end{lstlisting}
+\end{example}
 
 Este programa visualiza la tecla pulsada, para ello se ha introducido el formato \textit{\%c} en la instrucción \textit{iprintf} para visualizar un carácter. La salida del programa \textit{teclado.c} en el emulador se muestra en la Figura \ref{fig_c3_teclado1}.
 
@@ -267,7 +276,7 @@ En la página web \url{http://libnds.devkitpro.org/keyboard_8h.html} se encuentr
 
 
 \begin{exercise}
-A partir del código del programa \textit{teclado.c}, crea un programa que muestre tu nombre cuando se pulse una tecla cualquiera y que deje de mostrarlo cuando se deje de pulsar la tecla.
+A partir del código del programa \textit{teclado.c}, crea un programa que muestre tu nombre cuando se pulse y se mantenga pulsada una tecla cualquiera y que deje de mostrarlo cuando se deje de pulsar la tecla.
 \end{exercise}
 
 \begin{exercise}
@@ -303,7 +312,7 @@ La consola NDS presenta los siguientes botones como entrada de usuario (ver Figu
 
 Además, el cierre de la consola tiene también un sensor para saber si está abierta o cerrada, que a efectos de programación, funciona como otro botón más.
 
-La Figura \ref{fig_c3_botones_teclass} muestra la relación que existe entre los botones de la NDS y el teclado en el emulador.
+La Figura \ref{fig_c3_botones_teclass} muestra la relación que existe entre los botones de la NDS y el teclado en un determinado emulador.
 
 \begin{figure}[t]
 \centering
@@ -312,7 +321,7 @@ La Figura \ref{fig_c3_botones_teclass} muestra la relación que existe entre los
 \label{fig_c3_botones_teclass}
 \end{figure}
 
-Los pasos a seguir para determinar las operaciones realizadas con los botones son las siguientes:
+Los pasos a seguir para determinar las operaciones realizadas con los botones son los siguientes:
 \begin{enumerate}
 \item Primero, en cada paso por el bucle principal, se determinará si se ha pulsado algunos de los botones mediante la función \textit{scanKeys}. 
 %
@@ -335,9 +344,10 @@ El resultado de estas funciones se compara mediante una \textit{multiplicación 
 \item La bisagra del cierre de la consola: KEY\_LID.
 \end{itemize}
 
-La siguiente página web contiene informaicón sobre el uso de la botonera \url{http://libnds.devkitpro.org/arm9_2input_8h.html}
+La siguiente página web contiene información sobre el uso de la botonera \url{http://libnds.devkitpro.org/arm9_2input_8h.html}
 
-El siguiente ejemplo (\textit{botones.c}) comprueba el estado instantáneo de cada botón, mostrando en pantalla si se ha pulsado: 
+\begin{example}
+El siguiente programa (\textit{botones.c}) comprueba el estado instantáneo de cada botón, mostrando en pantalla si se ha pulsado: 
 \begin{lstlisting}
 #include <nds.h>
 #include <stdio.h>
@@ -371,8 +381,9 @@ int main()
   return 0;
 }
 \end{lstlisting}
-
-Se puede observar que se llama a la función \textit{scanKeys}, posteriormente se llama a la función \textit{keysCurrent} para conocer el estado actual de los botones. Dicha información se guarda en la variable \textit{keys}, declarada de tipo \textit{u32} (entero sin signo de 32 bits). Con el valor de esta variable se realiza la multiplicación bit a bit con el valor de un botón específico mediante:
+\end{example}
+	
+Se puede observar que se llama a la función \textit{scanKeys}, y que posteriormente se llama a la función \textit{keysCurrent} para conocer el estado actual de los botones. Dicha información se guarda en la variable \textit{keys}, declarada de tipo \textit{u32} (entero sin signo de 32 bits). Con el valor de esta variable se realiza la multiplicación bit a bit con el valor de un botón específico mediante:
 \begin{lstlisting}
 if (keys & KEY_UP)
 \end{lstlisting}
@@ -398,8 +409,9 @@ Modifica el programa anterior para que al pulsar el botón \textit{X} se cambie 
 \label{sec_pantalla_tactil}
 Como ya se ha comentado, la pantalla inferior emplea tecnología táctil. En la Nintendo DS se usa el  sistema de coordenadas cartesiano mostrado en la Figura \ref{fig_c3_cartesiano}. En el emulador se emplea el ratón como puntero de la pantalla táctil.
 
-La siguiente página web contiene informaicón sobre el uso de la pantalla táctil  \url{http://libnds.devkitpro.org/arm9_2input_8h.html}
+La siguiente página web contiene información sobre el uso de la pantalla táctil  \url{http://libnds.devkitpro.org/arm9_2input_8h.html}
 
+\begin{example}
 El siguiente programa (\textit{tactil.c}) cuenta el número de veces que se pulsa en la pantalla táctil.
 
 \begin{figure}[t]
@@ -437,6 +449,7 @@ int main(void) {
   return 0;
 }
 \end{lstlisting}
+\end{example}
 
 De este código se puede destacar lo siguiente:
 \begin{itemize}
@@ -477,6 +490,7 @@ La Nintendo DS cuenta con temporizadores (\textit{timers}) de tiempo real, que p
 
 La página web \url{http://libnds.devkitpro.org/timers_8h.html} muestra información sobre los temporizadores.
 
+\begin{example}
 El siguiente programa (\textit{tiempo.c}) muestra el tiempo que va transcurriendo en segundos:
 \begin{lstlisting}
 #include <nds.h>
@@ -501,7 +515,8 @@ int main()
   return 0;
 }
 \end{lstlisting}
-
+\end{example}
+	
 Se declara la variable \textit{ticks} como \textit{uint} (entero sin signo). En la llamada \textit{timerStart} cabe destacar lo si\-guien\-te:
 \begin{itemize}
 \item El primer parámetro hace referencia al \textit{temporizador 0}.
@@ -519,7 +534,10 @@ La función \textit{timerElapsed} proporciona el número de ticks que se han pro
 Modifica el programa \textit{tiempo.c} para que finalice la cuenta si han transcurrido 15 segundos o si se ha pulsado el boton \textit{Y}.
 \end{exercise}
 
-En ocasiones se desea que ocurra un evento cada cierto tiempo. Por ejemplo, el siguiente código (eventos.c) mueve la letra \textit{X} hacia la derecha cada 2 segundos:
+En ocasiones se desea que ocurra un evento cada cierto tiempo. 
+
+\begin{example}
+El siguiente programa (\textit{eventos.c}) mueve la letra \textit{X} hacia la derecha cada 2 segundos:
 
 \begin{lstlisting}
 #include <nds.h>
@@ -531,33 +549,34 @@ En ocasiones se desea que ocurra un evento cada cierto tiempo. Por ejemplo, el s
 int main()
 {
   consoleDemoInit();
-  uint ticks = 0;
-  int posicion = 0;
-  int segundos;
-  int proximo_cambio = 2;
-
+  uint ticks          = 0;
+  int  posicion       = 0;
+  int  proximo_cambio = 2;
+  int  segundos;
+  
   timerStart(0, ClockDivider_1024, 0, NULL);
 
   while (1)
   {
-    ticks += timerElapsed(0);
+    ticks   += timerElapsed(0);
     segundos = (int) (ticks/TIMER_SPEED);
 
     if (segundos >= proximo_cambio)
     {
-      posicion = posicion + 1;
+      posicion       = posicion       + 1;
       proximo_cambio = proximo_cambio + 2;
     }
-    iprintf("\x1b[1;%dH ",posicion-1);
-    iprintf("\x1b[1;%dHX",posicion);
+    iprintf("\x1b[1;%dH ", posicion-1); // Borra anterior
+    iprintf("\x1b[1;%dHX", posicion);   // Dibuja X
     swiWaitForVBlank();
   }
   return 0;
 }
 \end{lstlisting}
-
+\end{example}
+	
 \begin{exercise}
-	Modifica el programa \textit{evento.c} para que la letra se mueva cada 3 segundos.
+	Modifica el programa \textit{eventos.c} para que la letra se mueva cada 3 segundos.
 \end{exercise}
 
 Es importante destacar que para programar este tipo de funcionalidad, es más conveniente el uso de interrupciones, tal como se verá posteriormente.

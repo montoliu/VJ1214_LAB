@@ -41,11 +41,13 @@ En la versión que se va a desarrollar se usarán los conceptos aprendidos en el
 
 En la pantalla inferior habrá un mensaje indicando el dinero que tiene el jugador. Al inicio el jugador tendrá 1000 euros.
 
-También existirán cuatro botones, uno por caballo. El jugador deberá pulsar en un botón para apostar por un caballo determinado. La apuesta es de 100 euros. Si el caballo por el que ha apostado el jugador gana, se obtendrán 200 euros que serán añadidos al dinero total. Si gana otro caballo, el jugador perderá ese dinero.
+También existirán cuatro botones, uno por caballo. El jugador deberá pulsar en uno de los cuatro botones para apostar por un caballo determinado. La apuesta es de 100 euros. Si el caballo por el que ha apostado el jugador gana, se obtendrán 200 euros que serán añadidos al dinero total. Si gana otro caballo, el jugador perderá ese dinero.
 
 El juego continuará hasta que el jugador se quede sin dinero o alcance la cifra de 10 000 euros.
 
 \section{Desarrollo del juego}
+
+\begin{example}
 El siguiente listado (\textit{caballos\_inicial.c}) muestra el esqueleto del programa que puedes usar para empezar:
 \begin{lstlisting}
 #include <nds.h>
@@ -73,18 +75,18 @@ int main(void)
 
   while(1)
   {
-    consoleSelect(&pantalla_sup);
+    consoleSelect  (&pantalla_sup);
     MostrarCaballos(posicion_caballos);
-    consoleSelect(&pantalla_inf);
-    MostrarDinero(dinero);
-    MostrarBotones();
+    consoleSelect  (&pantalla_inf);
+    MostrarDinero  (dinero);
+    MostrarBotones ();
   }
 }
 
 void MostrarCaballos(int posicion_caballos[])
 {
-  iprintf("\x1b[2;%dHA",posicion_caballos[0]);
-  iprintf("\x1b[8;%dHB",posicion_caballos[1]);
+  iprintf("\x1b[2;%dHA", posicion_caballos[0]);
+  iprintf("\x1b[8;%dHB", posicion_caballos[1]);
   iprintf("\x1b[14;%dHC",posicion_caballos[2]);
   iprintf("\x1b[20;%dHD",posicion_caballos[3]);
 }
@@ -101,23 +103,22 @@ void MostrarDinero(int dinero)
 {
   iprintf("\x1b[2;1HTienes %d euros", dinero);
 }
-
 \end{lstlisting}
-
+\end{example}
+	
 Como se puede comprobar por el código anterior, los cuatro carriles para mostrar la evolución de los caballos estarán en las filas, 2, 8, 14 y 20 de la pantalla superior. En la fila 2 de la pantalla inferior se mostrará un mensaje indicando el dinero que tiene el jugador. En las filas 12, 13 y 14 se mostrarán los botones para apostar por los caballos.
-
-Para crear el programa completo debes resolver los siguientes ejercicios en el orden establecido.
 
 \begin{exercise}
 	Crea un nuevo proyecto usando el código \textit{caballos\_inicial.c} y comprueba que funciona correctamente.
 \end{exercise}
 
-En primer lugar debes crear el código necesario para que los caballos se muevan hacia la meta. Al inicio todos los caballos tendrán una velocidad de una posición por unidad de tiempo. Antes de mostrar la posición de los caballos (función \textit{MostrarCaballos}), debes llamar a una función de nombre \textit{ActualizarPosicionCaballos} que dada la posición actual y la velocidad actual de cada caballo, actualice su posición. Debes tener en cuenta que la máxima posición que puede tener un caballo es la columna 31 y la mínima la 0. Así mismo, la mínima velocidad de un caballo es 0, y la máxima un valor que establezcas (por ejemplo 3).
+Para crear el programa completo debes resolver los siguientes ejercicios en el orden establecido. En primer lugar debes crear el código necesario para que los caballos se muevan hacia la meta. Al inicio todos los caballos tendrán una velocidad de una posición por unidad de tiempo. Antes de mostrar la posición de los caballos (función \textit{MostrarCaballos}), debes llamar a una función de nombre \textit{ActualizarPosicionCaballos} que dada la posición actual y la velocidad actual de cada caballo, actualice su posición. Debes tener en cuenta que la máxima posición que puede tener un caballo es la columna 31 y la mínima la 0. Así mismo, la mínima velocidad de un caballo es 0, y la máxima un valor que establezcas (por ejemplo 3).
 
 Cada vez que actualices la posición de los caballos debes borrar la pantalla superior, para ello debes crear una funcion \textit{BorrarPantalla} que será llamada antes de mostrar los caballos en la nueva posición.
 
 Por último debes crear una función \textit{ComprobarGanador} que devolverá el número de caballo que ha llegado a la meta o -1 si no ha llegado todavía ninguno. En caso de empate, el ganador será siempre el que tenga el número menor. Por ejemplo, si llegan a la vez el 0 (letra A) y el 1 (letra B), el ganador será el 0.
 
+\begin{example}
 El programa principal, con los cambios comentados, es el siguiente:
 
 \begin{lstlisting}
@@ -129,7 +130,7 @@ El programa principal, con los cambios comentados, es el siguiente:
   int hay_ganador = 0;
   while(1)
   {
- 	if (hay_ganador == 0)
+    if (hay_ganador == 0)
     {
       int ganador = ComprobarGanador(posicion_caballos);
       if (ganador >= 0)
@@ -152,6 +153,7 @@ El programa principal, con los cambios comentados, es el siguiente:
 }
 ...
 \end{lstlisting}
+\end{example}
 
 Como puedes comprobar en el código anterior, la fila 5 de la pantalla inferior se usará para mostrar el caballo ganador.
 
@@ -161,27 +163,29 @@ Como puedes comprobar en el código anterior, la fila 5 de la pantalla inferior 
 
 Si el código funciona correctamente, habrás comprobado que los 4 caballos llegan a la vez a la meta, puesto que su velocidad es siempre la misma. Por lo tanto, el ganador es siempre el caballo 0. Además, puesto que en cada frame se actualiza la posición, el movimiento de los caballos no se aprecia. 
 
-Para solucionar el primer problema, debes modificar la función \textit{ActualizarPosicionCaballos} para que dependiendo de un número aleatorio, la velocidad de los caballos pueda variar.
+Para solucionar el primer problema, debes modificar la función \textit{ActualizarPosicionCaballos} para que dependiendo de un número aleatorio, la velocidad de los caballos pueda variar. Para modificar la velocidad de los caballos, se puede usar un generador de números aleatorios entre dos números reales usando la siguiente función \footnote{Código obtenido de \url{https://bytes.com/topic/c/answers/223101-rand-between-0-1-a}}:
 
-Para modificar la velocidad de los caballos, se puede usar un generador de números aleatorios entre dos números reales usando la siguiente función \footnote{Código obtenido de \url{https://bytes.com/topic/c/answers/223101-rand-between-0-1-a}}:
-
+\begin{example}
 \begin{lstlisting}
 double closed_interval_rand(double x0, double x1)
 {
   return x0 + (x1 - x0) * rand() / ((double) RAND_MAX);
 }
 \end{lstlisting}
+\end{example}
 
 Por ejemplo, puedes obtener un número entre $0.0$ y $1.0$ llamando a la función anterior tal como se muestra a continuación:
 
+\begin{example}
 \begin{lstlisting}
 double numero = closed_interval_rand(0.0, 1.0)
 \end{lstlisting}
+\end{example}
 
 Según el número obtenido puedes decidir aumentar o disminuir en la velocidad. Un posible algoritmo es el siguiente:
 
 \begin{enumerate}
-\item Si es menor a $\alpha$, entonces aumentar la velocidad en una unidad.
+\item Si el número obtenido es menor a $\alpha$, entonces aumentar la velocidad en una unidad.
 %
 \item Si es mayor a $\beta$, la velocidad disminuirá en una unidad. 
 %
@@ -194,18 +198,20 @@ Puedes cambiar los valores $\alpha$ y $\beta$ para que no todos los caballos cor
 
 Para evitar que el generador de números aleatorios genere siempre los mismos números, es conveniente inicializar la semilla del generador añadiendo el siguiente código al inicio del programa:
 
+\begin{example}
 \begin{lstlisting}
 srand (time(NULL));
 \end{lstlisting}
-	
+\end{example}
+		
 \begin{exercise}
 	 Modifica la función \textit{ActualizarPosicionCaballos} para permitir cambios en la velocidad de los caballos.
 \end{exercise}
 
-Para evitar que se actualice la posición de los caballos en cada frame hemos de usar el temporizador. Para ello debes hacer que cada un determinado número de segundos (por ejemplo 1), se llame a la parte del código que actualiza la posición. En el capítulo anterior hay un ejemplo que puedes usar como base.
+Para evitar que se actualice la posición de los caballos en cada frame hemos de usar el temporizador. Para ello debes hacer que cada determinado número de segundos (por ejemplo 1), se llame a la parte del código que actualiza la posición. En el capítulo anterior hay un ejemplo que puedes usar como base.
 
 \begin{exercise}
-	Modifica el programa para que el cambio de posición se realice cada un determinado número de segundos.
+	Modifica el programa para que el cambio de posición se realice cada determinado número de segundos.
 \end{exercise}
 
 Una vez llegado a este punto, tendremos un programa que mueve los caballos por la pantalla superior de forma que en cada ejecución el ganador puede ser cualquiera de los cuatro caballos.
