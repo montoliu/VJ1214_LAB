@@ -25,7 +25,7 @@ Existen tres tipos diferentes de configuraciones para los fondos 2D, que son \te
 
 Las imágenes que se desean mostrar en la pantalla deben ser traducidas a contenido binario, que se guardará junto con el programa y que debe ser copiado en un \textit{banco de memoria VRAM (Video RAM)} que es donde está mapeada la pantalla. Mapear la pantalla a un banco de memoria significa que a la pantalla se le asigna ese banco de memoria, de forma que lo que se haya escrito en ese banco de memoria será lo que se vea en la pantalla. 
 
-La Nintendo DS tiene 9 bancos de memoria de vídeo, que se pueden usar con diferentes propósitos. Cada de uno de estos bancos de memoria está etiquetado desde \textit{VRAM\_A} hasta \textit{VRAM\_I}. La Tabla \ref{tab_c5_NivelesDeEjecución} muestra cada uno de los bancos de memoria VRAM con su tamaño y su dirección de memoria. La cantidad total de memoria de vídeo es de 656KB. 
+La Nintendo DS tiene 9 bancos de memoria de vídeo, que se pueden usar con diferentes propósitos. Cada de uno de estos bancos de memoria está etiquetado desde \textit{VRAM\_A} hasta \textit{VRAM\_I}. La Tabla \ref{tab_c5_vram} muestra cada uno de los bancos de memoria VRAM con su tamaño y su dirección de memoria. La cantidad total de memoria de vídeo es de 656KB. 
 
 \begin{table}[t]
 \centering
@@ -54,7 +54,7 @@ VRAM\_H	& 32KB & 	0x6898000 \\
 VRAM\_I	& 16KB  &	0x68a0000\\
 \hline
 \end{tabular}
-\label{tab_c5_NivelesDeEjecución}
+\label{tab_c5_vram}
 \end{table}
 
 La Figura \ref{fig_c5_vram} muestra los bancos de memoria que se pueden usar en cada motor gráfico y para que fin. Por ejemplo, el banco \textit{VRAM C} se puede usar tanto por el motor \textit{main} como por el \textit{sub}. Sin embargo, el banco \textit{VRAM A} solo puede ser usado por el motor \textit{main}.
@@ -109,10 +109,16 @@ El registro \textit{REG\_DISPCNT} es el que se encarga de controlar los modos y 
 \label{fig_c5_reg_dispcnt3}
 \end{figure}
 
-Por ejemplo, para indicar que se activa el \textit{Modo 0} con el fondo \textit{BG0} se debe usar la siguiente instrucción:
+Por ejemplo, para indicar que se activa el \textit{Modo 0} con el fondo \textit{BG0} en el motor \textit{main}, se debe usar la siguiente instrucción:
 
 \begin{verbatim}
 REG_DISPCNT = MODE_0_2D | DISPLAY_BG0_ACTIVE;
+\end{verbatim}
+
+Para el motor secundario se usará la siguiente instrucción:
+
+\begin{verbatim}
+REG_DISPCNT_SUB = MODE_0_2D | DISPLAY_BG0_ACTIVE;
 \end{verbatim}
 
 Esta operación también se puede llevar a cabo, en el motor \textit{main}, mediante la instrucción:
@@ -136,19 +142,20 @@ Cada \textit{banco VRAM} tiene un registro \textit{VRAM\_?\_CR} (donde ? puede t
 \begin{figure}[t]
 \centering
 \includegraphics[height=4cm]{Figuras/C5/c5_reg_vram1.png}
-\caption{Significado de los bits del registro \textit{VRAM\_X\_CR}}
+\caption{Significado de los bits del registro \textit{VRAM\_?\_CR}}
 \label{fig_c5_reg_vram1}
 \end{figure}
 
 Como ejemplo, para indicar que se activa \textit{VRAM\_A} y que se asigna a fondos del motor principal (\textit{main}) se debe usar la instrucción:
 
 \begin{verbatim}
-VRAM_A_CR = VRAM_A_ENABLE | VRAM_A_MAIN_BG;
+VRAM_A_CR = VRAM_ENABLE | VRAM_A_MAIN_BG;
 \end{verbatim}
 
-Esta operación también se podría llevar a cabo mediante:
+Para el motor secundario se usará la siguiente instrucción:
 
 \begin{verbatim}
-vramSetBankA(VRAM_A_MAIN_BG);
+VRAM_C_CR = VRAM_ENABLE | VRAM_C_SUB_BG;
 \end{verbatim}
 
+En este caso se activa la \textit{VRAM C}, puesto que el motor secundario no puede usar la \textit{VRAM A} (ver figura \ref{fig_c5_vram}).

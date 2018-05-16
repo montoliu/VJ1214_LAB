@@ -30,12 +30,15 @@ Este capítulo explica el funcionamiento del modo teselado. La lista de ejercici
 % -----------------------------------------------------
 % -----------------------------------------------------
 \section{El modo teselado}
-El modo teselado permite muchas más posibilidades a la hora de realizar videjuegos con gráficos que el modo framebuffer. En este apartado vamos a ver primero como funciona de forma básica este modo. Posteriormente se comentará de forma más extensa.
+El modo teselado permite muchas más posibilidades a la hora de realizar videjuegos con gráficos que el modo framebuffer. 
 
 \subsection{Funcionamiento básico del modo teselado}
-En el modo teselado, la pantalla se divide en celdas de 8x8 píxeles conocidas como teselas. Una tesela es un bitmap de 8x8 que representa un gráfico que se quiere mostrar en una de las celdas en las que se divide la pantalla. 
+En el modo teselado, la pantalla se divide en celdas conocidas como teselas. Una tesela es un bitmap de 8x8 que representa un gráfico que se quiere mostrar en una de las celdas en las que se divide la pantalla. 
 
-Para definir una tesela, se deberá declarar un vector de 64 elementos ($8*8=64$) del tipo \textit{u8}. Por ejemplo, el siguiente código define las figuras del comecocos, del fantasma y un fondo:
+Para definir una tesela, se deberá declarar un vector de 64 elementos ($8*8=64$) del tipo \textit{u8}. 
+
+\begin{example}
+Por ejemplo, el siguiente código define las figuras del comecocos, del fantasma y un fondo:
 
 \begin{lstlisting}
 u8 comecocos[64] =
@@ -74,6 +77,7 @@ u8 fondo[64] =
 	2,2,2,2,2,2,2,2
 };
 \end{lstlisting}
+\end{example}
 
 Como se puede comprobar, se han definido los píxeles que componen la figura que representa la tesela. Se pueden definir hasta 1024 teselas diferentes. Existen dos formas de especificar los colores de los píxeles de las teselas:
 
@@ -83,7 +87,10 @@ Como se puede comprobar, se han definido los píxeles que componen la figura que
 \item Modo de 16 colores: En este caso un píxel es un índice a una paleta de 16 colores. Por lo tanto el índice será un entero de 4 bits, con un valor comprendido entre 0 y 15. Aunque este modo requiere menos memoria, dejando así más espacio para teselas y otros elementos en la VRAM, la calidad de la imagen renderizada se puede ver comprometida al disponer de solo 16 colores diferentes en cada tesela.
 \end{itemize}
 
-Para especificar los colores (en el modo de 256 colores), se debe modificar (en el programa principal) la paleta de colores mediante la variable \textit{BG\_PALETTE}. Por ejemplo, el código siguiente define los cuatro colores usados en las definiciones de las teselas anteriores:
+Para especificar los colores (en el modo de 256 colores), se debe modificar (en el programa principal) la paleta de colores mediante la variable \textit{BG\_PALETTE}. 
+
+\begin{example}
+Por ejemplo, el código siguiente define los cuatro colores usados en las definiciones de las teselas anteriores:
 
 \begin{lstlisting}
 	BG_PALETTE[1]=RGB15(28,0,0);
@@ -91,19 +98,23 @@ Para especificar los colores (en el modo de 256 colores), se debe modificar (en 
 	BG_PALETTE[3]=RGB15(0,0,31);
 	BG_PALETTE[4]=RGB15(31,31,31);
 \end{lstlisting}
+\end{example}
+	
+Como se puede comprobar, la posición 1 de la paleta se refiere a un color rojo, la 2 a uno verde, la 3 a uno azul y la 4 al color blanco.
 
 En este modo de funcionamiento, el número de colores está limitado a 256 (de 0 a 255), número que se puede representar usando un byte. Por lo tanto, una tesela ocupa en memoria $8*8*1=64$ bytes. 
 
 Para definir cómo se muestran las teselas en la pantalla se puede declarar un vector que tendrá tantos elementos como teselas queramos mostrar. Por ejemplo, si queremos mostrar toda la pantalla, será necesario declarar el vector con 768 elementos del tipo u16 ($32*24=768$). En dicho vector, comúnmente llamado mapa de teselas, se especifica la tesela a mostrar usando un número entero (de 2 bytes). El identificador de la tesela es el orden en el que estará almacenada en la memoria. 
 
+\begin{example}
 El siguiente código declara el mapa de teselas para que cubra toda la pantalla (24 filas y 32 columnas):
 
 \begin{lstlisting}
 u16 mapData[768] =
 {
-1,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
-2,2,2,3,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
-2,3,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
+1,2,3,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
+2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
 
 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,
@@ -132,10 +143,15 @@ u16 mapData[768] =
 2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2,  2,2,2,2,2,2,2,2, 2,2,2,2,2,2,2,2
 };
 \end{lstlisting}
+\end{example}
+	
+Como se puede comprobar, el elemento que se situará en la fila 0, columna 0 es la tesela con identificador 1 que será la que se almacenará en la memoria en primer lugar (será el comecocos), y la que se situará a su derecha es la tesela con identificador 2, que será la que se almacenará en segundo lugar (será el fondo). La tesela almacenada en la tercera posición (será el fantasma) se mostrará en la fila 0, columna 2. Las teselas que se muestran en cada posición se podrán modificar durante el transcurso del programa.
 
-Como se puede comprobar, el elemento que se situará en la fila 0, columna 0 es la tesela con identificador 1 que será la que se almacenará en la memoria en primer lugar (será el comecocos), y la que se situará a su derecha es la tesela con identificador 2, que será la que se almacenará en segundo lugar (será el fondo). El mapa de teselas ocupará, en este caso, $768*2=1\ 536$ bytes. Este vector se copiará en la memoria del fondo para que el motor gráfico sepa qué teselas tiene que mostrar en la pantalla.
+El mapa de teselas ocupará, en este caso, $768*2=1\ 536$ bytes. Este vector se copiará en la memoria del fondo para que el motor gráfico sepa qué teselas tiene que mostrar en la pantalla.
 
-Una de las principales ventajas de este modo es el ahorro en el uso de memoria que proporciona esta forma de trabajar. Esto es debido a que el mapa de teselas especifica donde está almacenada la tesela a mostrar, no el contenido de la misma. Es decir, en vez de guardar $24*32*64 = 49\ 152$ bytes (24 filas, 32 columnas y cada tesela de $8\times8$ píxeles de 1 byte), se almacena $24*32*2 = 1\ 536$ bytes (24 filas, 32 columnas y 2 bytes por cada identificador de la tesela) más 64 bytes por cada tesela usada. Como en este ejemplo se usan tres teselas, el tamaño total de memoria que se necesita es $1\ 536 + 64*3 = 1\ 728$ bytes, lo que supone un ahorro de más del 95\% de memoria.
+Una de las principales ventajas de este modo es el ahorro en el uso de memoria que proporciona esta forma de trabajar. Esto es debido a que el mapa de teselas especifica donde está almacenada la tesela a mostrar, no el contenido de la misma. Es decir, en vez de guardar $24*32*64 = 49\ 152$ bytes (24 filas, 32 columnas y cada tesela de $8\times8$ píxeles de 1 byte), se almacena $24*32*2 = 1\ 536$ bytes (24 filas, 32 columnas y 2 bytes por cada identificador de la tesela) más 64 bytes por cada tesela usada. Como en el ejemplo anterior se usaban tres teselas, el tamaño total de memoria que se necesita es $1\ 536 + 64*3 = 1\ 728$ bytes, lo que supone un ahorro de más del 95\% de memoria.
+
+Con respecto al modo framebuffer el ahorro de memoria es incluso mayor. En el modo framebuffer especificamos el color de cada uno de los 192x256 píxeles usando un número de 2 bytes. Por lo tanto, se necesitan $192*256*2=98\ 302$ bytes. 
 
 Para configurar el modo teselado, deberemos usar las siguientes instrucciones:
 
@@ -146,9 +162,21 @@ Para configurar el modo teselado, deberemos usar las siguientes instrucciones:
 	BGCTRL [0]   = BG_32x32     | BG_COLOR_256 | BG_MAP_BASE(0) | BG_TILE_BASE(1);
 \end{lstlisting}
 
-La línea 1 activa ambos motores gráficos. En la segunda línea indicamos que vamos a usar el modo 0 y el fondo 0 (ver Figura \ref{fig_p2_c3_modulos}) del motor principal. En la tercera línea activamos el banco de memoria \textit{VRAM\_A} y lo asignamos como memoria de fondos del motor principal. La cuarta línea se utiliza para configurar la memoria de fondos del fondo 0. Con \textit{BG\_32\_32} elegimos el número de teselas máximo que podemos usar. Hay cuatro posibilidades $32\times32$, $32\times64$, $64\times32$ y $64\times64$. En nuestro caso se ha seleccionado $32\times32$. Con \textit{BG\_COLOR\_256} indicamos que las teselas tendrán 256 colores que se especificarán en la paleta. Con \textit{ BG\_MAP\_BASE(0)} indicamos donde se va a guardar el mapa de teselas. En este caso el mapa de teselas se almacenará en el primer bloque (para mapas) de la \textit{VRAM\_A}. Por último, con \textit{BG\_TILE\_BASE(1)} indicamos donde se almacenarán las teselas, que en este caso es a partir del segundo bloque (para teselas) de la \textit{VRAM\_A}.
+La línea 1 activa ambos motores gráficos. En la segunda línea indicamos que vamos a usar el modo 0 y el fondo 0 del motor principal (ver Figura \ref{fig_c5_modulos}). En la tercera línea activamos el banco de memoria \textit{VRAM\_A} y lo asignamos como memoria de fondos del motor principal. 
 
-La memoria \textit{VRAM\_A} tiene un tamaño de 128KB (ver Tabla \ref{tab_p2_c3_NivelesDeEjecución}). Tanto la memoria de teselas como las teselas se deben copiar a este banco de memoria. Los mapas de teselas se almacenan en bloques de 2KB. Hay 32 posibles posiciones (de la 0 a la 31). En este ejemplo, el mapa de teselas se almacenará en el primer bloque mediante la macro \textit{BG\_MAP\_BASE(0)}. Como el mapa de teselas ocupa $24*32*2 = 1\ 536$ bytes, cabe perfectamente en un único bloque de 2KB. Si no cupiera, se deberían usar más bloques.
+La cuarta línea se utiliza para configurar la memoria de fondos del fondo 0:
+\begin{itemize}
+	\item Con \textit{BG\_32\_32} elegimos el número de teselas máximo que podemos usar. Hay cuatro posibilidades $32\times32$, $32\times64$, $64\times32$ y $64\times64$. En nuestro caso se ha seleccionado $32\times32$.
+	%
+	\item Con \textit{BG\_COLOR\_256} indicamos que las teselas tendrán 256 colores que se especificarán en la paleta.
+	%
+	\item Con \textit{ BG\_MAP\_BASE(0)} indicamos donde se va a guardar el mapa de teselas. En este caso el mapa de teselas se almacenará en el primer bloque (para mapas) de la \textit{VRAM\_A}.
+	%
+	\item Por último, con \textit{BG\_TILE\_BASE(1)} indicamos donde se almacenarán las teselas, que en este caso es a partir del segundo bloque (para teselas) de la \textit{VRAM\_A}.
+\end{itemize}
+  
+
+La memoria \textit{VRAM\_A} tiene un tamaño de 128KB (ver Tabla \ref{tab_c5_vram}). Tanto la memoria de teselas como las teselas se deben copiar a este banco de memoria. Los mapas de teselas se almacenan en bloques de 2KB. Hay 32 posibles posiciones (de la 0 a la 31). En este ejemplo, el mapa de teselas se almacenará en el primer bloque mediante la macro \textit{BG\_MAP\_BASE(0)}. Como el mapa de teselas ocupa $24*32*2 = 1\ 536$ bytes, cabe perfectamente en un único bloque de 2KB. Si no cupiera, se deberían usar más bloques.
 
 Las teselas se guardan en bloques de 16KB. Hay 16 posibles posiciones (de la 0 a la 15). En este ejemplo, las tres teselas se almacenarán en el segundo bloque mediante la macro \textit{BG\_TILE\_BASE(1)}. Como las tres teselas ocupan $8*8*1*3 = 192$ bytes, cabe perfectamente en un único bloque de 16KB. Si no cupiera, se deberían usar más bloques. 
 
