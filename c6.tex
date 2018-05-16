@@ -36,7 +36,7 @@ se desea pintar.
 Tal como muestra la Figura \ref{fig_c5_modulos} únicamente el motor principal puede usar el modo framebuffer. Esto implica que solo se podrá mostrar una imagen en una de las dos pantallas a la vez.
 % -----------------------------------------------------
 % -----------------------------------------------------
-\subsection{Preparando el modo framebuffer}
+\section{Preparando el modo framebuffer}
 El modo framebuffer admite cuatro tipos de configuración, que reciben el nombre de FB0, FB1, FB2 o FB3 y que básicamente establecen la zona de memoria cuyo contenido se va a volcar en la pantalla. Las zonas de memoria donde se deberá volcar la información en cada una de las cuatro configuraciones son VRAM\_A, VRAM\_B, VRAM\_C o VRAM\_D, respectivamente.
 
 En primer lugar hay que especificar el modo seleccionado, para lo cual se utiliza el registro REG\_DISPCNT y la macro que se corresponda con el modo a utilizar. Por ejemplo, para usar la configuración FB0 (y por lo tanto la zona de memoria VRAM\_A) se deberá usar el siguiente código:
@@ -55,7 +55,7 @@ Una vez especificado el modo y habilitada la zona de memoria donde se escribirá
 
 % -----------------------------------------------------
 % -----------------------------------------------------
-\subsection{Mostrar imágenes}
+\section{Mostrar imágenes}
 \label{sec:p2_c3_imagenes}
 El modo framebuffer no utiliza fondos ni motor de renderizado, por lo que la única tarea a realizar para mostrar una imagen es transferir al banco de memoria correspondiente los datos del gráfico a mostrar. Para ello, será necesario convertir esa imagen en un mapa de bits.
 
@@ -157,7 +157,7 @@ Modifica el programa anterior para que el cambio de imagen a mostrar se realice 
 	
 % -----------------------------------------------------
 % -----------------------------------------------------
-\subsection{Dibujar píxeles}
+\section{Dibujar píxeles}
 \label{sec:p2_c3_pixeles}
 Otra forma alternativa de representar gráficos en modo framebuffer consiste en componer una imagen a partir de la asignación de colores a cada uno de los píxeles que componen la pantalla. Al igual que en el caso anterior, el primer paso consistirá en especificar el modo de vídeo utilizado. 
 	
@@ -270,7 +270,7 @@ Realiza un programa que al pulsar las teclas A, X y B (de la NDS) muestre las ba
 
 % -----------------------------------------------------
 % -----------------------------------------------------
-\subsection{Ejercicios avanzados}
+\section{Ejercicios avanzados}
 
 \begin{exercise}
 Realiza un programa que permita mover un cuadrado de 25x25 píxeles por la pantalla. Para ello se usarán los botones de las flechas de la NDS. Se deberá tener en cuenta los límites de la pantalla.
