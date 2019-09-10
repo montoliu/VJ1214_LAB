@@ -1,0 +1,225 @@
+\chapterimage{chapter_head_1.pdf} 
+\chapter{El sistema de Entrada/Salida}
+
+Este capítulo trata sobre el sistema de entrada y salida que todos los computadores necesitan tener para poder interactuar con los usuarios.
+
+Para profundizar más en el tema, se recomienda la consulta del capítulo 8 del libro \textit{Introducción a la arquitectura de computadores con QtARMSim y Arduino} de Sergio Barrachina Mir et al.
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\section{Introducción}
+Las videoconsolas actuales se pueden considerar computadores cuya principal función es ejecutar juegos. Todos ellos   disponen de una amplia variedad de dispositivos, llamados periféricos,  que  permiten la comunicación con el usuario. Esta comunicación entre el computador y el periférico se lleva a cabo mediante operaciones de Entrada/Salida (E/S). El objetivo de este capítulo es el análisis de cómo se llevan a cabo este tipo de operaciones.
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\section{Problemática de la E/S}
+Las videoconsolas, y los computadores en general,  no funcionan de forma aislada. Deben relacionarse e interactuar con el entorno que les rodea, ya sea con sus usuarios, con otros computadores o con otros aparatos electrónicos. Los dispositivos que permiten esta comunicación reciben el nombre de {\bf periféricos}. Hay una amplia variedad  y se pueden clasificar según la  función que realizan: 
+
+\begin{itemize}
+	\item Periféricos de salida: sirven para que el computador presente información o lleve a cabo determinadas acciones. Por ejemplo, los monitores o pantallas y las impresoras. 
+	%
+	\item Periféricos de entrada: sirven para introducir información en el computador, como los teclados y los escáneres.
+	%
+	\item Periféricos de E/S: permiten que la información fluya en los dos sentidos. Destacan los discos duros y las pantallas táctiles, estas muy utilizadas en las videoconsolas.
+\end{itemize}
+
+Cada uno de estos periféricos presenta determinados requerimientos de comunicación. Por ejemplo, un teclado permite introducir caracteres en un computador y debe enviar la información de qué teclas se están pulsando. Sin embargo, la velocidad con la que debe transmitir dicha información no tiene que ser demasiado alta. Al fin y al cabo, el teclado estará siendo utilizado por una persona, que en el mejor  de los casos utilizará más de dos dedos y tecleará sin mirar el teclado. Por otro lado, un disco duro permite almacenar y recuperar información digital: documentos, programas, juegos, información de las jugadas, etc. Pero en el caso de un disco duro, la velocidad con la que se transmite la información es crucial. De hecho, será tanto mejor cuanto más rápido permita la lectura o escritura de la información.
+
+Los periféricos, además de por las funciones que realizan y de los requerimientos de comunicación, también se diferencian por la tecnología que emplean, es decir, por la forma en la que llevan a cabo su cometido. Es distinta la tecnología utilizada en un disco duro que en una impresora. Incluso, en el caso de las impresoras por ejemplo,  se pueden clasificar en: térmicas, de impacto, de inyección de tinta, láseres, por sublimación, etc. Cada una de ellas utiliza una tecnología distinta para llevar a cabo el mismo fin: presentar sobre papel, u otro tipo de material, una determinada información.
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\subsection{Controlador E/S}
+Toda esta variedad de funciones,  tecnologías y  necesidades de comunicación hace necesaria la existencia de hardware específico que se encargue de  la comunicación entre el procesador y los periféricos. Este  hardware recibe el nombre de \textbf{controlador de E/S}. Este dispositivo se conecta, por un lado al bus del sistema y por el otro al dispositivo periférico. El procesador para realizar una operación de E/S con el periférico se comunica con su controlador. Los controladores ocultan al procesador las dificultades propias de la gestión de los diferentes dispositivos y proporcionan una interfaz uniforme para realizar  este tipo de  operaciones.  Por ejemplo, en el caso de los discos duros, cada fabricante utiliza una determinada tecnología para la fabricación de sus productos. Cada disco duro incorpora un controlador de E/S que conoce las peculiaridades de funcionamiento de dicho disco duro en concreto. Pero además, dicho controlador de E/S cumple con una serie de normas que son comunes a todos los controladores de
+E/S para discos duros y que permiten la comunicación del disco duro con el procesador. Un controlador de E/S puede gestionar a uno o varios periféricos simultáneamente.
+
+Los controladores disponen de tres registros básicos internos para llevar a cabo su función: 
+
+\begin{itemize}
+	\item \textbf{Registro de control}: Almacena órdenes que indican cómo se va a realizar la operación de E/S. 
+	%
+	\item \textbf{Registro de estado}: Contiene el estado del periférico y de la operación de E/S que se acaba de realizar.
+	
+	\item \textbf{Registro de datos}: Este registro también recibe el nombre de {\bf puerto de entrada o salida}. Almacena el dato que se va a intercambiar con el periférico:
+	%
+	\begin{itemize}
+		\item En una operación de entrada, el periférico envía el dato al controlador de E/S, se almacena en este registro y, finalmente, el procesador lo lee. 
+		\item En una operación de  salida, el procesador escribe el dato  en este registro y, desde él, se enviará al periférico.
+	\end{itemize}
+	%
+\end{itemize}
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\subsection{Mapa de direcciones de la E/S}
+Cada registro se identifica en el sistema por una dirección. El conjunto de todas estas direcciones  forma lo que se conoce como {\bf mapa de direcciones de E/S o espacio de direcciones de E/S}. El procesador, cuando necesite leer o escribir información sobre alguno de estos registros utilizará su dirección para seleccionarlo como ocurre con la memoria.  
+
+Este mapa de direcciones  pueden formar parte de dos espacios de direccionamiento distintos: 
+
+\begin{itemize}
+	\item Espacio de direcciones de memoria: {\bf E/S mapeado en memoria}. En el sistema existe un mapa de direcciones único, una parte (superior o inferior) se asigna a la memoria y el resto a la E/S. El procesador lee o escribe en estos registros de la misma forma  como lo hace  en cualquier otra parte de la memoria, utilizando las instrucciones de acceso 
+	a memoria (de lectura o escritura en memoria)  proporcionando la dirección correspondiente del registro accedido. Esta es la modalidad utilizada por ARM (procesador empleado en la Nintendo DS).
+	%
+	\item Espacio de  direcciones de E/S: {\bf E/S aislado}. Existen dos espacios de direccionamiento distintos, uno para memoria y otro para E/S. El procesador lee o escribe
+	en los registros utilizando instrucciones especiales para acceder a los puertos de E/S. Esta es la modalidad utilizada por los procesadores basados en la arquitectura x86.
+\end{itemize}
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\subsection{Operaciones de E/S}
+Una operación de E/S requiere una secuencia de operaciones que se detallan a continuación:
+
+\begin{enumerate}
+	\item {\bf Comprobación del estado del periférico}: es necesario  conocer cuando está disponible para realizar la operación de E/S. Esto se realiza leyendo el registro de estado. 
+	%
+	\item {\bf Envío de las órdenes al  registro de control}: hay que escribir la secuencia de palabras  de control necesarias para llevar a cabo la operación de E/S en el periférico. Esto requerirá una o varias operaciones de escritura en el registro de control. 
+	%
+	\item {\bf Intercambio de información con el controlador}. Esto se realiza leyendo (entrada) o escribiendo (salida) en el registro de datos del controlador de E/S, para recoger o env\'iar el dato, respectivamente.
+	%
+	\item {\bf Comprobación del estado del periférico}:  para conocer si la operación se ha desarrollado correctamente. De nuevo se realiza una operación de lectura sobre el registro de estado. 
+\end{enumerate}
+
+Estos pasos se recogen en lo que se llamará programa de E/S. Este consistirá en una secuencia de instrucciones que leerán o escribirán sobre los registros del controlador.
+
+En esta secuencia de operaciones destacan dos  aspectos básicos:
+
+\begin{itemize}
+	\item Sincronización entre el procesador y el periférico para que se lleve a cabo el intercambio de información. Los dos  dispositivos trabajan a velocidades muy distintas y  tiene que utilizarse alguna técnica para conocer en qué instante se puede llevar a cabo este intercambio. Se utilizan b\'asicamente dos técnicas:
+	
+	\begin{itemize}
+		\item Consulta de estado. Comprobación periódica del estado del periférico para determinar la disponibilidad.
+		\item Interrupciones. El propio periférico avisa cuando está disponible. 
+	\end{itemize}
+	
+	\item Transferencia de datos entre el procesador y el dispositivo. Este intercambio se lleva a cabo cuando los datos estén disponibles y se puede realizar entre el dispositivo y la memoria o el procesador. Da lugar a dos técnicas:
+	
+	\begin{itemize}
+		\item Utilizando instrucciones de transferencia de datos. Se utilizan las instrucciones que tiene el procesador para transferir información entre registros y memoria o puertos de E/S.  
+		\item Por acceso directo a memoria. Permite realizar transferencias de bloques de información entre la memoria y el dispositivo sin que intervenga el procesador. Se dispone de un controlador que se programa para que realice la transferencia. 
+	\end{itemize}
+\end{itemize}
+
+Todo esto da lugar a diferentes formas de llevar a cabo las operaciones de E/S que se detallan en los apartados siguientes. 
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\section{E/S por consulta de estado}
+Con esta técnica, la sincronización entre el procesador y el periférico se realiza haciendo esperar al procesador hasta que se pueda realizar el intercambio de información entre ellos. 
+
+Esta espera se  implementa en el propio programa  de E/S mediante  un bucle que se repetirá hasta que cambie el estado del periférico indicando que el intercambio se puede hacer.  Cada iteración del bucle lee el registro de estado, de forma que si no está preparado para hacer la transferencia continuará con la siguiente iteración  y, si está preparado, finaliza el bucle y ejecuta las instrucciones que realizan la transferencia. Un ejemplo de implementación se muestra  a continuación: 
+
+\begin{verbatim}
+Leer estado periférico
+while (! preparado) 
+{ 
+	Leer estado periférico  
+}
+Enviar datos a/desde el periférico
+\end{verbatim}
+
+En el registro de estado hay un bit (llamado bit de \textit{ready o preparado}) que cambia de valor (de 0 a 1 o al revés) cuando se almacena/libera la información contenida en el registro de datos, indicando que ha llegado un dato desde el periférico  o se ha enviado el dato hacia el periférico.  La condición  del bucle analiza  este bit y  determina si continua la espera o no (se ejecutan las instrucciones del bucle o no). Como puede apreciarse en la implementación no requiere ningún hardware especial. La sincronización es la espera que proporciona el propio  bucle.
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\section{E/S por interrupciones}
+Una gestión más eficiente de la E/S conlleva que sean los propios dispositivos los que avisen al procesador de  cuándo se puede hacer  el intercambio de información entre ellos. Este aviso consiste en que el controlador  solicita lo que se conoce como  {\bf una interrupción} al procesador. El procesador, si lo tiene permitido, detiene lo que está procesando, atiende la interrupción solicitada, lleva a cabo la transferencia de información y continúa con el procesamiento interrumpido.  De esta forma, el procesador no malgasta tiempo en la espera y permite compaginar eficientemente las diferentes velocidades de funcionamiento de los distintos periféricos y del procesador. Mediante esta técnica el procesador y los periféricos pueden trabajar de forma paralela, es decir, mientras un determinado periférico está realizando una operación de E/S, el procesador puede estar ejecutando instrucciones que resuelven otra tarea distinta o atendiendo a otro periférico.
+
+Esta técnica implica realizar los siguientes pasos para realizar una operación de E/S: 
+
+\begin{enumerate}
+	\item Inicio de la operación: El programa que contiene la operación de E/S envía todos los comandos necesarios al 
+	controlador para que programe la operación  en el periférico.
+	\item El controlador ejecuta la operación sobre el periférico y cuando está preparado para realizar el intercambio de información con el procesador le avisa, solicitando una interrupción.
+	\item El procesador detecta la interrupción y la procesa. El procesamiento consiste en ejecutar otro programa (rutina de tratamiento de la interrupción) que  llevará a cabo el intercambio de información.
+\end{enumerate}
+
+Como ya se ha dicho anteriormente, lo más interesante de esta técnica es que entre el paso 1) y 2), el procesador no tiene que esperar, puede estar ejecutando un programa distinto. 
+
+Esta técnica implica que el procesador debe disponer de hardware y software para que se puedan realizar y atender las peticiones:
+
+\begin{itemize}
+	\item Hardware
+	
+	\begin{itemize}
+		\item Señal de control que forma parte del bus de control, llamada en ocasiones \textbf{IRQ (Interruption ReQuest)}, que será la que activarán los periféricos para solicitar la interrupción. Se activa desde el periférico y la recibe el procesador.
+		\item Señal de control que forma parte del bus de control, llamada normalmente {\bf IACK (Interruption ACKnowlegde)}, que será la que el procesador activará cuando detecta que hay una interrupción pendiente y la va a atender. Se activa desde el procesador y la recibe el periférico. 
+		\item Circuitos de control para llevar a cabo el procesamiento de una interrupción.
+	\end{itemize}
+	%
+	\item Software
+	\begin{itemize}
+		\item Rutina  que contiene las instrucciones necesarias para atender la interrupción solicitada. Por ejemplo:
+		\begin{itemize}
+			\item Si un periférico de entrada solicita una interrupción: se tiene que leer el dato introducido que está en el registro de datos.
+			\item Si se trata de un periférico de salida: habrá que  escribir un nuevo  dato en el registro de datos para enviarlo al exterior.
+		\end{itemize}
+		Este software recibe el nombre de {\bf Rutina de tratamiento de la interrupción (RTI)}. La RTI tiene que estar almacenada en memoria como cualquier programa y el procesador tiene que conocer en qué dirección está para que pueda ejecutarla. 
+	\end{itemize}
+\end{itemize}
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\subsection{Procesamiento de una interrupción}
+A continuación se resumen las fases en los que se divide el  procesamiento de una interrupción desde que el periférico la solicita hasta que el procesador la atiende y continúa con el programa que ha interrumpido para atenderla.
+\begin{enumerate}
+	\item El periférico inicia todo el proceso cuando está preparado para realizar un intercambio de información con el procesador  {\bf activando la señal IRQ}:
+	\begin{itemize}
+		\item Operación de entrada:   en el registro de datos se ha cargado un nuevo dato desde el periférico. 
+		\item Operación de salida: se ha liberado el registro de datos con el envío al periférico del dato que contenía.  
+	\end{itemize}
+	\item Esta petición habrá llegado al procesador mientras éste  se encuentra ejecutando instrucciones y su modo de funcionamiento hace que se realicen las siguientes operaciones: 
+	\begin{description}
+		\item  [2.1 Finaliza el ciclo de una instrucción.] El que se estaba ejecutando mientras se ha recibido la petición de interrupción.  
+		\item [2.2 Comprueba el estado de las interrupciones.] Comprueba si hay alguna interrupción pendiente por parte de alguno de los dispositivos conectados a las líneas IRQ.
+		En el registro de estado del procesador se almacena información sobre qué interrupciones  puede atender y cuáles no. Detectada una petición comprueba si tiene permiso para  atenderla.  Así, según tenga o no permiso, lleva a cabo operaciones distintas:
+		\begin{itemize}
+			\item No tiene permiso: continúa con la ejecución de la siguiente instrucción. Hace caso omiso de la petición. 
+			\item Sí que tiene permiso: Se inicia lo que se conoce como {\bf procesamiento de una interrupción} y cuyas acciones se detallan a continuación.
+		\end{itemize}
+		\item [2.3 Almacenamiento del estado actual del procesador.] Salva el PC (contador de programa) y el registro de
+		estado del procesador en registros internos o en la pila del sistema.
+		\item [2.4 Obtención de la dirección  de la RTI.] La RTI, como cualquier otro programa, está almacenada en memoria y el procesador tiene que conseguir su dirección de inicio para ejecutarla. Hay diferentes técnicas: 
+		\begin{itemize}
+			\item Dirección fija. El procesador genera dicha dirección y la carga en el PC.
+			\item La dirección se la proporciona el periférico. El procesador activa la señal \textbf{IACK}, que la recibe el periférico y éste  responde enviando la dirección a través del bus  de datos. El procesador la recoge y la carga en el PC.
+		\end{itemize}
+		A partir de este momento la ejecución de instrucciones por parte del procesador continuará desde esta dirección. 
+		
+		\item [2.5 Ejecución de la RTI.]  La primera tarea de esta rutina es salvar el resto de registros del procesador. A continuación, lleva a cabo las acciones oportunas para tratar 
+		el evento que provocó la interrupción. Por ejemplo, si la interrupción es por una nueva entrada de datos, entonces la gestión consistirá 
+		en leer el registro de datos del periférico y almacenar la información  en otro registro del procesador o en la memoria. La rutina finaliza su ejecución  recuperando todo el estado del procesador, entre ellos el PC que permite continuar con el programa interrumpido. 
+		\item [2.6 Continúa la ejecución del programa detenido.] Ejecutando la siguiente instrucción.
+	\end{description}
+\end{enumerate}
+Esta descripción indica que la ejecución de la RTI durante el procesamiento de una interrupción es como un salto a una subrutina. La principal diferencia es, que en la gestión de las interrupciones, el salto no se conoce cuando se va a producir. Dicho salto se producirá cuando el procesador  detecte la activación de la línea IRQ y, entonces,  tiene que averiguar la dirección de la RTI para ejecutarla.  
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\subsection{Enmascaramiento de las interrupciones}
+
+La gestión de las operaciones de E/S en los dispositivos periféricos, en la mayoría de ellos, es algo que se puede programar a través de su registro de control.  El registro de control dispone de uno o varios bits para las interrupciones y fijan si las puede solicitar o no. Si el dispositivo puede solicitar interrupción se dice que está {\bf habilitada}. Si no puede, se dice que  está {\bf enmascarada}. Esto determina cómo se llevarán a cabo las operaciones de E/S. Si las tiene enmascaradas su gestión se realizará por consulta de estado.
+
+Independientemente de como tenga el periférico configurada la interrupción, el procesador también puede fijar su estado. Es decir, las puede tener habilitadas o enmascaradas. Si el {\bf procesador} tiene la interrupción {\bf enmascarada} significa que aunque el periférico active dicha línea, el procesador no atenderá ninguna de las peticiones que llegan a través de ella. Durante la etapa de procesamiento de una interrupción,  el procesador comprueba el estado de la interrupción, si está enmascarada no continúa con el procesamiento.  
+A este nivel, el enmascaramiento/habilitación de una interrupción se realiza poniendo determinados bits del registro de estado del procesador a un valor prefijado. 
+
+% ----------------------------------------------------------------
+% ----------------------------------------------------------------
+\subsection{Identificación de la interrupción}
+Un aspecto importante relacionado con la gestión de las interrupciones es averiguar qué dispositivo ha solicitado la interrupción. La problemática surge cuando hay varios  que están conectados a la misma línea  \textbf{IRQ} y cualquiera de ellos pueda activarla (solicitar interrupción). La identificación se puede realizar utilizando dos técnicas distintas:
+
+\begin{description}
+	\item [Por consulta, también llamadas no vectorizadas:] Durante el procesamiento de una interrupción, el procesador genera una dirección fija que se carga en el PC y genera el salto a la RTI. En esta rutina (rutina general) se comprueba qué periférico ha hecho la solicitud.  Esta información se puede extraer del registro de estado del controlador de E/S, puesto que tiene un conjunto de bits que indican el estado de la petición (activa/no activa).  Estos bits cambian automáticamente cuando se activa la línea y vuelven al estado inicial una vez atendida.  Cuando se identifica el dispositivo, se salta a su RTI mediante una instrucción de salto a la dirección correspondiente.
+	
+	Si hay peticiones simultáneas, las interrupciones se atienden en el orden en el que se hace la lectura de los registros de estado para determinar qui\'en ha interrumpido. 
+	%
+	\item [Vectorizadas:] Durante el procesamiento de una interrupción, el procesador activa la línea (IACK). Cuando un dispositivo  recibe esta señal envía por el bus de datos la dirección  de la RTI. Esta información la recibe el procesador y la  carga en el PC.
+	
+	La línea  IACK está conectada  a todos los periféricos que realizan la petición a través de la misma IRQ. La conexión es en cadena. De forma que cuando el procesador activa esta línea, llega al primer dispositivo de la cadena, si él ha realizado la petición envía la dirección. Si no es así, envía IACK al siguiente dispositivo de la cadena. Así sucesivamente hasta que se alcance uno que sí que ha hecho la petición, entonces no envía dicha señal a los siguientes dispositivos. La conexión de los dispositivos establece el orden en el que se servirán las interrupciones en caso que haya peticiones simultáneas.
+\end{description}
+

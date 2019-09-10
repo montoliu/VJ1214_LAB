@@ -76,19 +76,6 @@ ser usados directamente en el código de un programa para \textit{GBA} o \textit
 
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
-\subsection{Entornos de desarrollo}
-Se puede definir un \textit{IDE (Integrated Development Environment)} como un programa compuesto por un conjunto de herramientas útiles para un desarrollador de software. Como elementos básicos, un IDE cuenta con un editor de código, un compilador/intérprete y un depurador.  También puede dar soporte a más de un lenguaje de programación.
-
-Para desarrollar programas para la NDS se tienen las siguientes opciones:
-
-\begin{itemize}
-\item Cualquier entorno de desarrollo en C/C++ es válido para desarrollar programas para la NDS, pero suelen requerir dedicar tiempo a configurar tanto los compiladores como los ajustes necesarios de cada proyecto individual. 
-%
-\item Emplear un IDE pensado específicamente para el desarrollo en Nintendo DS. Por ejemplo, \textit{Eclipse Ganymede} dispone de un \textit{plugin} \textit{NDS}. 
-\end{itemize}
-
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
 \subsection{Emuladores}
 Un \textit{emulador} es un programa que se ejecuta en un computador (sistema anfitrión del emulador) y se encarga de recrear el comportamiento de un computador diferente (sistema objetivo del emulador). La ventaja de utilizar un emulador de NDS es que no se necesita tener ni videoconsola ni cartuchos especiales. Sin embargo, las funcionalidades de la NDS que se soportan dependen del emulador utilizado. 
 
@@ -104,136 +91,94 @@ Un \textit{emulador} es un programa que se ejecuta en un computador (sistema anf
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
-\section{Instalación del entorno de desarrollo en Windows}
-Se puede encontrar información sobre el proceso de instalación en la siguiente página web:
-\begin{verbatim}
-http://snipah.com/index.php?option=com_content&view=article&id=44&Itemid=53
-\end{verbatim}
-
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-\subsection{Instalación de \textit{devkitpro}}
+\section{Instalación de \textit{DekvitPro}}
 Se accede a la página web:
 \begin{verbatim}
 http://devkitpro.org/
 \end{verbatim}
-Se pulsa en \textit{For instructions on installing the toolchains see our Getting Started pages} y posteriormente elegir \textit{Windows Installer/Updater package} y descargar la última versión (p. ej. \textit{devkitProUpdater-1.6.0.exe}). 
+
+Se pulsa en \textit{Click Here for instructions on installing the tools and getting started} y, según el sistema operativo, se siguen unas instrucciones u otras.
+
+% --------------------------------------------------------------------------
+% --------------------------------------------------------------------------
+\subsection{Instalación en Windows}
+Se debe elegir \textit{Windows Installer/Updater package} y descargar la última versión (p. ej. \textit{devkitProUpdater-3.0.3.exe}). 
+
+Una vez ha terminado la instalación se deben modificar unas variables de entorno. Por ejemplo, si la instalación se ha realizado en \textit{c:$\backslash$devkitPro}, habría que actualizar las siguientes variables:
+\begin{verbatim}
+DEVKITARM -> /c/devkitPro/devkitARM
+DEVKITPRO -> /c/devkitPro/
+\end{verbatim}
+
+y en la variable PATH añadir:
+\begin{verbatim}
+c:\devkitPro\devkitARM\bin
+\end{verbatim}
+
+También sería conveniente hacer una copia de los siguientes ficheros que se encuentran en 
+\textit{C:$\backslash$devkitPro$\backslash$devkitARM$\backslash$bin}:
+\begin{itemize}
+\item arm-none-eabi-as
+\item arm-none-eabi-g++
+\item arm-none-eabi-gcc
+\item arm-none-eabi-gdb
+\item arm-none-eabi-objcopy
+\end{itemize}
+
+Finalmente, es recomendable renombrar las copias con los siguientes nombres:
+\begin{itemize}
+\item arm-eabi-as
+\item arm-eabi-g++
+\item arm-eabi-gcc
+\item arm-eabi-gdb
+\item arm-eabi-objcopy
+\end{itemize}
+
+% --------------------------------------------------------------------------
+% --------------------------------------------------------------------------
+\subsection{Instalación en Linux}
+Pulsar en \url{https://devkitpro.org/wiki/devkitPro_pacman} y seguir los pasos explicados en esa página web.
+
+Es recomendable hacer una copia de los siguientes ficheros que se encuentran en \textit{/opt/devkitpro/devkitARM/bin}:	
+\begin{itemize}
+ 	\item arm-none-eabi-as
+ 	\item arm-none-eabi-g++
+ 	\item arm-none-eabi-gcc	
+ 	\item arm-none-eabi-gdb
+   	 \item arm-none-eabi-objcopy
+\end{itemize}
+
+Posteriormente, hay que renombrar las copias con los siguientes nombres:	
+\begin{itemize}
+ 	\item arm-eabi-as
+ 	\item arm-eabi-g++
+ 	\item arm-eabi-gcc	
+ 	\item arm-eabi-gdb
+    \item arm-eabi-objcopy
+    \end{itemize}
+
 	
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
-\subsection{Instalación de \textit{WinDS Pro}}
+\section{Instalación de los emuladores}
 Se puede descargar la última versión de \textit{WinDS Pro} de la siguiente página web:
 \begin{verbatim}
-https://windsprocentral.blogspot.com.es/2016/10/winds-pro.html
-\end{verbatim} 
+https://windsprocentral.blogspot.com/\end{verbatim} 
 
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-\subsection{Instalación de \textit{eclipse} con el \textit{plugin de NDS}}
-Existen dos posibilidades:
-\begin{enumerate}
-\item Instalar el \textit{eclipse} que ya contiene el \textit{plugin de NDS}.
-\item Instalar \textit{eclipse} y después añadir el \textit{plugin NDS ManagedBuilder}.
-\end{enumerate}
-
-A continuación se describen los pasos a seguir para ambas opciones.
-
-% --------------------------------------------------------------------------
-\subsubsection{Instalar \textit{eclipse} que ya contiene el \textit{plugin de NDS}}  
-En la página web indicada al comienzo de esta sección (\textit{Instalación del entorno de desarrollo en Windows}), en concreto en \textit{Full Eclipse packages} se pulsa en \textit{Eclipse Full Package Win32 - Zip-Format} para descargar el fichero
-\begin{verbatim}
-eclipse-cpp-ganymede-win32_nds.zip
-\end{verbatim}
-
-% --------------------------------------------------------------------------
-\subsubsection{Instalar \textit{eclipse} y después añadir el \textit{plugin NDS ManagedBuilder}}
-En este caso el primer paso consiste en la instalación de \textit{eclipse}. Por cuestiones de compatibilidad se escoge la versión \textit{Helios}. Se accede a la página web:
-\begin{verbatim}
-	http://www.eclipse.org/downloads/packages/release/Helios/R
-	\end{verbatim}
-y se descarga la versión  \textit{Eclipse IDE for C/C++ Developers} para el sistema operativo apropiado a las necesidades del equipo con el que se va a trabajar. Una vez descomprimido el fichero ya se tiene instalado \textit{eclipse}. El siguiente paso es 
-instalar el plugin mediante el actualizador del propio \textit{eclipse} que se encuentra en \textit{Help->Install New Software}, tal y como muestra la Figura \ref{fig_c2_win1}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=9cm]{./Figuras/C2/c2_instalar_windows1.png}
-\caption{Instalación del plugin NDS en eclipse (parte 1).}
-\label{fig_c2_win1}
-\end{figure}
-
-A continuación en la ventana \textit{Available Software} se pulsa el botón \textit{Add}, y se introduce la siguiente información:
-\begin{itemize}
-	\item Name: \textit{NDS Manager builder}
-	\item Location: \textit{http://dev.snipah.com/nds/updater}
-\end{itemize}
-
-Esta operación se refleja en la Figura \ref{fig_c2_win2}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_instalar_windows2.png}
-\caption{Instalación del plugin NDS en eclipse (parte 2).}
-\label{fig_c2_win2}
-\end{figure}
-
-Para que el proceso se realice de forma adecuada hay que tener la precaución de desactivar la opción \textit{Group items by category}. De esta forma aparecerá el software buscado, debiendo activarse las casillas correspondientes a \textit{devkitARM}, tal y como muestra la Figura \ref{fig_c2_win4}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_instalar_windows4.png}
-\caption{Instalación del plugin NDS en eclipse (parte 3).}
-\label{fig_c2_win4}
-\end{figure}
-
-Después de pulsar en sucesivos botones \textit{Next} y aceptar la licencia, comienza la instalación  del software. Durante dicho proceso puede aparecer la Figura \ref{fig_c2_win6}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=7cm]{./Figuras/C2/c2_instalar_windows6.png}
-\caption{Instalación del plugin NDS en eclipse (parte 4).}
-\label{fig_c2_win6}
-\end{figure}
-
-Simplemente se pulsa en \textit{OK} para continuar el proceso de instalación. Una vez finalizada la instalación se debe reiniciar \textit{eclipse}.
-
-Como comprobación de que todo ha ido correctamente, a la hora de crear el proyecto se debe observar que aparece algo parecido a lo mostrado en la Figura \ref{fig_c2_win7}.
-
-\begin{figure}[h]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_instalar_windows7.png}
-\caption{Instalación del plugin NDS en eclipse (parte 5).}
-\label{fig_c2_win7}
-\end{figure}
-
-
-Se elige \textit{Empty Project (libnds)}, y si después de pulsar en \textit{Next} aparece lo mostrado en la Figura \ref{fig_c2_win8}, entonces todo está correcto.
-
-\newpage
-
-\begin{figure}[h]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_instalar_windows8.png}
-\caption{Instalación del plugin NDS en eclipse (parte 6).}
-\label{fig_c2_win8}
-\end{figure}
-
+Seleccionar \textit{Descargar WinDS PRO} en Windows o \textit{Descargar LinuxDS PRO} en Linux. Seguir las instrucciones.
 
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
-\section{Nuestro primer programa para NDS en Windows}
-En esta sección se van a ver los pasos para realizar nuestro primer programa para la NDS en el sistema operativo \textit{Windows}. 
+\section{Nuestro primer programa para NDS}
+En esta sección se van a ver los pasos para realizar nuestro primer programa para la NDS en los sistemas operativos \textit{Windows} y \textit{Linux}. 
 
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
-
-\subsection{Desarrollar código para la NDS sin emplear Eclipse}
+\subsection{Desarrollar código en \textit{Windows}}
 \label{sec:programa}
-En este apartado se va a crear el primer programa en la NDS sin emplear \textit{Eclipse} como herramienta de desarrollo.
 
-% --------------------------------------------------------------------------
-\subsubsection{Creación de la estructura de ficheros}
 Se puede emplear como punto de partida el ejemplo  \textit{hello\_world} que aparece en el directorio \textit{nds} del directorio \textit{examples} de  \textit{DevkitPro}. En  el laboratorio de prácticas, \textit{DevkitPro} se encuentra en el directorio \textit{C:$\backslash$}. En el directorio donde se vayan a almacenar los  programas a desarro\-llar se crea un nuevo directorio que identifique el programa a desarrollar (p.ej. \textit{ejemplo}). Dentro de ese directorio se crea el directorio \textit{source}, que contendrá los ficheros necesarios para el código a desarrollar (p.ej. \textit{main.c}). En el directorio \textit{ejemplo} se copia el fichero \textit{Makefile} del  ejemplo  \textit{hello\_world} de \textit{DevkitPro}. De esta forma la estructura de ficheros que se tiene es la siguiente:
 
 {\scriptsize
@@ -242,7 +187,7 @@ Se puede emplear como punto de partida el ejemplo  \textit{hello\_world} que apa
     - directorio ejemplo
       - fichero Makefile
       - directorio source
-      - fichero main.c
+        - fichero main.c
 \end{verbatim}
 }
 
@@ -319,26 +264,6 @@ Si no se han producido errores de compilación aparecerán los ficheros  \textit
 
 El primero (\textit{ejemplo.elf}) es el que contiene la información de depuración, por tanto, el depurador tendrá que trabajar necesariamente con él. Sin embargo,  la consola (o el emulador) solo será capaz de ejecutar la imagen del cartucho \textit{ejemplo.nds}. También se ha creado el directorio \textit{build}, que por ahora no tiene interés para lo que se  se está desarrollando. Para borrar todos los ficheros y directorios creados durante la compilación se puede ejecutar \textit{make clean}.
 
-Si se produjese un error relacionado con que no encuentra el compilador se puede realizar lo siguiente:
-\begin{itemize}
-\item Hacer una copia de los siguientes ficheros que se encuentran en \textit{C:$\backslash$ devkitPro $\backslash$ devkitARM $\backslash$ bin}:	
-	\begin{itemize}
- 		\item arm-none-eabi-as
- 		\item arm-none-eabi-g++
-	 	\item arm-none-eabi-gcc	
- 		\item arm-none-eabi-gdb
-	   \item arm-none-eabi-objcopy
-	\end{itemize}
-\item Renombrar las copias con los siguientes nombres:	
-	\begin{itemize}
-		\item arm-eabi-as
-	 	\item arm-eabi-g++
-	 	\item arm-eabi-gcc	
- 		\item arm-eabi-gdb
-	   \item arm-eabi-objcopy
-	\end{itemize}
-\end{itemize}
-
 % --------------------------------------------------------------------------
 \subsubsection{Ejecución del fichero ejemplo en el emulador}
 Si no se ha producido ningún problema en la compilación, la salida del programa se puede ver en el emulador. Una vez abierto \textit{WinDS Pro}, si se escoge el emulador \textit{No\$gba}, se pulsa en \textit{File->Cartridge Menu (File Name)} y se busca el fichero \textit{.nds} que nos interesa. En nuestro caso, y una vez elegido \textit{ejemplo.nds} aparece la ventana en el emulador mostrada en la Figura \ref{fig_c2_eclipse11b}.
@@ -352,234 +277,17 @@ Si no se ha producido ningún problema en la compilación, la salida del program
 
 Si se escoge el emulador \textit{DeSmuME}, se pulsa en \textit{File->Open ROM} y se busca el fichero \textit{.nds} que nos interesa.
 
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-\subsection{Desarrollar código para la NDS empleando Eclipse}
-\label{sin_eclipse}
-En este apartado se va a crear el primer programa en la NDS empleando \textit{Eclipse} como herramienta de desarrollo.
-
-% --------------------------------------------------------------------------
-\subsubsection{Creación de un proyecto para NDS}
-En  el laboratorio de prácticas, \textit{Eclipse} se encuentra en el directorio \textit{C:$\backslash$}. Al iniciar \textit{Eclipse} se pide el directorio donde se almacenará el proyecto a crear, tal como muestra la Figura \ref{fig_c2_eclipse1}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=9cm]{./Figuras/C2/c2_eclipse1.png}
-\caption{Creación de un proyecto para NDS usando Eclipse (parte 1).}
-\label{fig_c2_eclipse1}
-\end{figure}
-
-
-Para crear un nuevo proyecto se debe pulsar en la ventana principal de \textit{Eclipse} en \textit{File->New->C project} (ver Figura \ref{fig_c2_eclipse2}). 
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=6cm]{./Figuras/C2/c2_eclipse2.png}
-\caption{Creación de un proyecto para NDS usando Eclipse (parte 2).}
-\label{fig_c2_eclipse2}
-\end{figure}
-
-Aparece la ventana (\textit{C Project}) mostrada en la Figura \ref{fig_c2_eclipse3}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_eclipse3.png}
-\caption{Creación de un proyecto para NDS usando Eclipse (parte 3).}
-\label{fig_c2_eclipse3}
- \end{figure}
-
-\noindent en la que se debe configurar lo siguiente:
-\begin{itemize}
-\item El nombre del proyecto (p.ej. \textit{ejemplo}).
-\item En \textit{Project types} se selecciona \textit{Nintendo DS Rom-> Empty Project (libnds)}.
-\item Se pulsa en \textit{Next}.
-\end{itemize}
-
-Aparece una ventana de \textit{Select Configurations} en la que se pulsa en \textit{Finish}. 
-
-Una vez creado el proyecto, si lo que aparece es la siguiente ventana se debe elegir el icono de \textit{workbench}, tal y como se muestra en la Figura \ref{fig_c2_eclipsew}.
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_eclipse-workbench.png}
-\caption{Creación de un proyecto para NDS usando Eclipse  (parte 4).}
-\label{fig_c2_eclipsew}
-\end{figure}
-
-De esta forma, el  proyecto creado aparecerá en la ventana de \textit{workbench} de \textit{Eclipse} (ver Figura \ref{fig_c2_eclipse4}).
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_eclipse4.png}
-\caption{Creación de un proyecto para NDS usando Eclipse (parte 5).}
-\label{fig_c2_eclipse4}
-\end{figure}
-
-Esta ventana podría aparecer directamente sin necesidad de elegir el icono de \textit{workbench} de \textit{Eclipse}.
-
-% --------------------------------------------------------------------------
-\subsubsection{Configuración del proyecto}
-Para iniciar la configuración del proyecto, se debe pulsar en la ventana principal de \textit{Eclipse} en \textit{Project Properties}, teniendo la precaución de tener activado el proyecto que se desea. Una vez realizada esta operación aparece la ventana (\textit{Properties for ejemplo}) (ver Figura \ref{fig_c2_eclipse5}).
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=8cm]{./Figuras/C2/c2_eclipse5.png}
-\caption{Creación de un proyecto para NDS usando Eclipse (parte 6).}
-\label{fig_c2_eclipse5}
-\end{figure}
-
-En dicha ventana se debe desplegar la pestaña \textit{C/C++ Build}. Se resalta dicha opción. En el cuadro \textit{Builder} de la pestaña \textit{Builder Settings} se cambia la opción \textit{Builder Type} a \textit{Internal Builder} (ver Figura \ref{fig_c2_eclipse6}).
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_eclipse6.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse (parte 7).}
-	\label{fig_c2_eclipse6}
-\end{figure}
-
-En la pestaña \textit{C/C++ Build} se resalta \textit{Settings}, apareciendo la ventana que se muestra en la Figura \ref{fig_c2_eclipse7}.
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_eclipse7.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse  (parte 8).}
-	\label{fig_c2_eclipse7}
-\end{figure}
-
-Se escoge \textit{devkitARM C Linker->ARM} y se desactiva la opción \textit{No FPU}. Finalmente se pulsa en \textit{OK} (ver Figura \ref{fig_c2_eclipse8}).
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_eclipse8.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse  (parte 9).}
-	\label{fig_c2_eclipse8}
-\end{figure}
-
-% --------------------------------------------------------------------------
-\subsubsection{Edición del fichero ejemplo}
-Para familiarizarse con el entorno de desarrollo de \textit{Eclipse} para NDS, se utiliza el mismo ejemplo que el del apartado anterior. En primer lugar, se debe crear un fichero fuente en \textit{lenguaje C} dentro del proyecto actual. Para ello se pulsa en \textit{File->New->Source File} (ver Figura \ref{fig_c2_eclipse9}).
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=7cm]{./Figuras/C2/c2_eclipse9.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse  (parte 10).}
-	\label{fig_c2_eclipse9}
-\end{figure}
-
-Aparece una nueva ventana (\textit{New Source File}) (ver Figura \ref{fig_c2_eclipse10}).
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=7cm]{./Figuras/C2/c2_eclipse10.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse  (parte 11).}
-	\label{fig_c2_eclipse10}
-\end{figure}
-
-
-\noindent en la que se debe realizar lo siguiente:
-\begin{itemize}
- 	\item En \textit{Source File} se introduce \textit{main.c}.
- 	\item En \textit{Template} se selecciona \textit{None}.
- 	\item Se pulsa en \textit{Finish}.
-\end{itemize}
-
-A continuación en la ventana que hace referencia a \textit{main.c} se introduce el mismo código que el del apartado \ref{sec:programa}.
-
-% --------------------------------------------------------------------------
-\subsubsection{Compilación del fichero ejemplo}
-El siguiente paso es compilar el programa, para ello se elige \textit{Project->Build Project}. Si no se han producido errores de compilación aparecerán los ficheros  \textit{ejemplo.elf} y \textit{ejemplo.nds} en el directorio \textit{Debug}, tal y como se puede comprobar en la Figura \ref{fig_c2_ficheros_eclipse}.
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=7cm]{./Figuras/C2/c2_ficheros_eclipse.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse  (parte 12).}
-	\label{fig_c2_ficheros_eclipse}
-\end{figure}
-
-Si se produjese un error relacionado con que no encuentra el compilador se puede realizar lo siguiente:
-\begin{itemize}
-\item Hacer una copia de los siguientes ficheros que se encuentran en \textit{C:$\backslash$ devkitPro $\backslash$ devkitARM $\backslash$ bin}:	
-	\begin{itemize}
-	 	\item arm-none-eabi-as
-	 	\item arm-none-eabi-g++
-	 	\item arm-none-eabi-gcc	
-	 	\item arm-none-eabi-gdb
-	   \item arm-none-eabi-objcopy
-	\end{itemize}
-\item Renombrar las copias con los siguientes nombres:	
-	\begin{itemize}
-	 	\item arm-eabi-as
-	 	\item arm-eabi-g++
-	 	\item arm-eabi-gcc	
-	 	\item arm-eabi-gdb
-	   \item arm-eabi-objcopy
-	 \end{itemize}
-\end{itemize}
-
-
-% --------------------------------------------------------------------------
-\subsubsection{Ejecución del fichero ejemplo en el emulador}
-Una vez abierto \textit{WinDS Pro}, si se escoge el emulador \textit{No\$gba}, se pulsa en \textit{File->Cartridge Menu (File Name)} y se busca el fichero \textit{.nds} que nos interesa. En nuestro caso, y una vez elegido \textit{ejemplo.nds} aparece la ventana en el emulador mostrada en la Figura \ref{fig_c2_eclipse11b}.
-
-Si se escoge el emulador \textit{DeSmuME}, se pulsa en \textit{File->Open ROM} y se busca el fichero \textit{.nds} que nos interesa.
 
 % --------------------------------------------------------------------------
 % --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-\section{Instalación del entorno de desarrollo en Linux}
-Las operaciones a seguir para instalar el entorno de desarrollo en Linux son las siguientes:
+\subsection{Desarrollar código en \textit{Linux}}
+\label{sec:programa}
 
-\begin{enumerate}
-\item Instalación de \textit{devkitpro}. Se accede a la página web:
- 	\begin{verbatim}
- 	http://devkitpro.org/
- 	\end{verbatim}
-Se pulsa en \textit{For instructions on installing the toolchains see our Getting Started pages} y posteriormente elegir \textit{Manual instructions for installing devkitARM} y seguir los pasos que aparecen en dicha página web.
-%	
-\item Instalación de \textit{WinDS Pro}. Se puede descargar la última versión de \textit{WinDS Pro} de la siguiente página web:
-	\begin{verbatim}
-	 https://windsprocentral.blogspot.com.es/2016/10/winds-pro.html
-	\end{verbatim} 
-%
-\item Instalación de \textit{desmume}. Se pueden seguir los pasos que aparecen en la siguiente página web:
-{\scriptsize
-	\begin{verbatim}
-		http://wiki.desmume.org/index.php?title=Installing_DeSmuME_from_source_on_Linux
-	\end{verbatim}
-}
-
-Recomendable emplear la opción \textit{Install desmume from svn}.
-%
-\item Instalación de \textit{eclipse} \textit{Helios}. Se siguen los mismos pasos que los indicados para Windows.
-%
-\item Instalación del \textit{plugin NDS ManagedBuilder}. En este caso será necesario  instalar el plugin mediante el actualizador del propio Eclipse que se encuentra en \textit{Help->Install New Software}. Para ello se emplea la \textit{url} de actualizaciones del \textit{NDS Managed builder}
- \textit{(http://dev.snipah.com/nds/updater)}, que se deberá especificar en la ventana mostrada en la Figura \ref{fig_c2_managebuilder}.
-\end{enumerate}
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_Pantallazo2.png}
-	\caption{Instalación del \textit{plugin NDS ManagedBuilder}}
-	\label{fig_c2_managebuilder}
-\end{figure}
-
-
-Hay que tener la precaución de desactivar la opción \textit{Group items by category}. Después de aceptar la licencia se instalará el plugin. Una vez finalizada la instalación se debe reiniciar Eclipse.
-
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-\section{Nuestro primer programa para NDS en Linux}
 En esta sección se van a ver los pasos para realizar nuestro primer programa para la NDS en el sistema operativo \textit{Linux}. \textbf{En el laboratorio se debe entrar con la cuenta \textit{usuario}}. Antes de nada se debe comprobar que las siguientes variables de entorno se encuentran en el fichero \textit{.bash\_profile} del \textit{usuario}:
 \begin{verbatim}
  export DEVKITPRO=/opt/devkitpro/
  export DEVKITARM=/opt/devkitpro/devkitARM/
 \end{verbatim}
-
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-\subsection{Desarrollar código para la NDS sin emplear Eclipse}
-En este apartado se va a crear el primer programa en la NDS sin emplear \textit{Eclipse} como herramienta de desarrollo.
 
 % --------------------------------------------------------------------------
 \subsubsection{Creación de la estructura de ficheros}
@@ -589,10 +297,8 @@ Se puede emplear como punto de partida el ejemplo  \textit{hello\_world} que apa
     - directorio ejemplo
       - fichero Makefile
       - directorio source
-      - fichero main.c
+        - fichero main.c
 \end{verbatim}
-
-
 
 % --------------------------------------------------------------------------
 \subsubsection{Edición del fichero ejemplo}
@@ -641,170 +347,7 @@ Si no se han producido errores de compilación aparecerán los ficheros \textit{
                 \end{verbatim}
 Para borrar todos los ficheros y directorios creados durante la compilación se puede ejecutar \textit{make clean}.
 
-Si se produjese un error relacionado con que no encuentra el compilador se puede realizar lo siguiente:
-\begin{itemize}
-\item Hacer una copia de los siguientes ficheros que se encuentran en \textit{/opt/devkitpro/devkitARM/bin}:	
-	\begin{itemize}
- 	\item arm-none-eabi-as
- 	\item arm-none-eabi-g++
- 	\item arm-none-eabi-gcc	
- 	\item arm-none-eabi-gdb
-    \item arm-none-eabi-objcopy
-	\end{itemize}
-\item Renombrar las copias con los siguientes nombres:	
-	\begin{itemize}
- 	\item arm-eabi-as
- 	\item arm-eabi-g++
- 	\item arm-eabi-gcc	
- 	\item arm-eabi-gdb
-    \item arm-eabi-objcopy
-    \end{itemize}
-\end{itemize}
-
 % --------------------------------------------------------------------------
 \subsubsection{Ejecución del fichero ejemplo en el emulador}
 Si no se ha producido ningún problema en la compilación, la salida del programa se puede ver en el emulador. Una vez abierto \textit{WinDS Pro}, si se escoge el emulador \textit{No\$gba}, se pulsa en \textit{File->Cartridge Menu (File Name)} y se busca el fichero \textit{.nds} que nos interesa. Si se escoge el emulador \textit{DeSmuME}, se pulsa en \textit{File->Open ROM} y se busca el fichero \textit{.nds} que nos interesa.
-
-
-% --------------------------------------------------------------------------
-% --------------------------------------------------------------------------
-\subsection{Desarrollar código para la NDS empleando Eclipse}
-En este apartado se va a crear el primer programa en la NDS empleando \textit{Eclipse} como herramienta de desarrollo.
-
-% --------------------------------------------------------------------------
-\subsubsection{Creación de un proyecto para NDS}
-En  el laboratorio de prácticas, \textit{Eclipse} se encuentra en el directorio \textit{/opt/eclipse-helios}.  Al iniciar \textit{Eclipse} se pide el directorio donde se almacenará el proyecto a crear (ver Figura \ref{fig_pig_p3_c1_eclipel1}).
-
-\begin{figure}[t]
-\centering
-\includegraphics[height=4cm]{./Figuras/C2/c2_instan1.png}
-\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 1).}
-\label{fig_pig_p3_c1_eclipel1}
- \end{figure}
-
-
-Para crear un nuevo proyecto se debe pulsar en la ventana principal de \textit{Eclipse} en \textit{Archivo->Nuevo->Proyecto}.  Aparece la ventana (\textit{Proyecto nuevo}) mostrada en la Figura \ref{fig_pig_p3_c1_eclipel2}.
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_instan2.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 2).}
-	\label{fig_pig_p3_c1_eclipel2}
-\end{figure}
-
-Se escoge \textit{C/C++->Proyecto en C} y se pulsa en \textit{Siguiente}, apareciendo la ventana \textit{Proyecto C} mostrada en la Figura \ref{fig_pig_p3_c1_eclipel3}.
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_instan3.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 3).}
-	\label{fig_pig_p3_c1_eclipel3}
-\end{figure}
-
-En dicha ventana se debe configurar lo siguiente:
- \begin{itemize}
- 	\item El nombre de proyecto (p.ej. \textit{ejemplo}).
- 	\item En \textit{Project type} se selecciona \textit{NintendoDS Rom-> Empty Project (libnds)}.
- 	\item Se pulsa en \textit{Siguiente}.
- \end{itemize}
-
-Aparece una ventana de \textit{Select Configurations} en la que se pulsa en \textit{Finalizar}. 
-
-De esta forma, el  proyecto creado aparecerá en la ventana de \textit{workbench} de \textit{Eclipse}, lo que se muestra en la Figura \ref{fig_pig_p3_c1_eclipel4}.
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_instan4.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 4).}
-	\label{fig_pig_p3_c1_eclipel4}
-\end{figure}
-
-% --------------------------------------------------------------------------
-\subsubsection{Configuración del proyecto}
-Para iniciar la configuración del proyecto, se debe pulsar en la ventana principal de \textit{Eclipse} en \textit{Proyecto->Propiedades}, teniendo la precaución de tener activado el proyecto que se desea. Una vez realizada esta operación aparece la ventana (\textit{Propiedades de ejemplo}) (ver Figura \ref{fig_pig_p3_c1_eclipel5}).
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_instan5.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 5).}
-	\label{fig_pig_p3_c1_eclipel5}
-\end{figure}
-
-En dicha ventana se debe desplegar la pestaña \textit{C/C++ Build}. Se resalta dicha opción. En el cuadro \textit{Constructor} de la pestaña \textit{Builder Settings} se cambia la opción \textit{Builder Type} a \textit{Internal Builder} (ver Figura \ref{fig_pig_p3_c1_eclipel6}).
-
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=8cm]{./Figuras/C2/c2_instan6.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 6).}
-	\label{fig_pig_p3_c1_eclipel6}
-\end{figure}
-
-En la pestaña \textit{C/C++ Build} se resalta \textit{Valores}, apareciendo la ventana mostrada en la Figura \ref{fig_pig_p3_c1_eclipel7}.
-
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=7cm]{./Figuras/C2/c2_instan7.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 7).}
-	\label{fig_pig_p3_c1_eclipel7}
-\end{figure}
-
-Se escoge \textit{devkitARM C Linker->ARM} y se desactiva la opción \textit{No FPU}. Finalmente se pulsa en \textit{Aceptar} (ver Figura \ref{fig_pig_p3_c1_eclipel8}).
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=7cm]{./Figuras/C2/c2_instan8.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 8).}
-	\label{fig_pig_p3_c1_eclipel8}
-\end{figure}
-
-
-% --------------------------------------------------------------------------
-\subsubsection{Edición del fichero ejemplo}
-Para familiarizarse con el entorno de desarrollo de \textit{Eclipse} para NDS, se utiliza el mismo ejemplo que el del apartado anterior.  En primer lugar, se debe crear un fichero fuente en \textit{lenguaje C} dentro del proyecto actual. Para ello se pulsa en \textit{Archivo->Nuevo->Source File}. Aparece una nueva ventana (\textit{New Source File}) (ver Figura \ref{fig_pig_p3_c1_eclipel9}).
-
-\begin{figure}[t]
-	\centering
-	\includegraphics[height=7cm]{./Figuras/C2/c2_instan9.png}
-	\caption{Creación de un proyecto para NDS usando Eclipse en Linux (parte 9).}
-	\label{fig_pig_p3_c1_eclipel9}
-\end{figure}
-
-
-\noindent en la que se debe realizar lo siguiente:
-\begin{itemize}
- 	\item En \textit{Source File} se introduce \textit{main.c}.
- 	\item En \textit{Template} se selecciona \textit{Ninguno}.
- 	\item Se pulsa en \textit{Finalizar}.
-\end{itemize}
-
-A continuación en la ventana que hace referencia a \textit{main.c} se introduce el mismo código que el del apartado \ref{sec:programa}.
-
-% --------------------------------------------------------------------------
-\subsubsection{Compilación del fichero ejemplo}
-El siguiente paso es compilar el programa, para ello se elige \textit{Proyecto->Construir proyecto}. Si no se han producido errores de compilación aparecerá el fichero \textit{ejemplo.nds} en el directorio \textit{Debug}. Si se produjese un error relacionado con que no encuentra el compilador se puede realizar lo siguiente:
-
-\begin{itemize}
-\item Hacer una copia de los siguientes ficheros que se encuentran en \textit{/opt/devkitpro/devkitARM/bin}:	
- \begin{itemize}
- 	\item arm-none-eabi-as
- 	\item arm-none-eabi-g++
- 	\item arm-none-eabi-gcc	
- 	\item arm-none-eabi-gdb
-   \item arm-none-eabi-objcopy
- \end{itemize}
- 	\item Renombrar las copias con los siguientes nombres:	
- \begin{itemize}
- 	\item arm-eabi-as
- 	\item arm-eabi-g++
- 	\item arm-eabi-gcc	
- 	\item arm-eabi-gdb
-   \item arm-eabi-objcopy
- \end{itemize}
-\end{itemize}
-
-% --------------------------------------------------------------------------
-\subsubsection{Ejecución del fichero ejemplo en el emulador}
-Una vez abierto \textit{WinDS Pro}, si se escoge el emulador \textit{No\$gba}, se pulsa en \textit{File->Cartridge Menu (File Name)} y se busca el fichero \textit{.nds} que nos interesa. Si se escoge el emulador \textit{DeSmuME}, se pulsa en \textit{File->Open ROM} y se busca el fichero \textit{.nds} que nos interesa.
 

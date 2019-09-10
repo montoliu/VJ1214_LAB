@@ -139,7 +139,7 @@ Se puede encontrar más información en la web: \url{http://libnds.devkitpro.org
 \section{Los registros \textit{VRAM\_?\_CR}} 
 Cada \textit{banco VRAM} tiene un registro \textit{VRAM\_?\_CR} (donde ? puede tomar los valores de A a I) para activarlo y seleccionar su función. La Figura \ref{fig_c5_reg_vram1} muestra el significado de cada uno de sus bits. Cabe destacar que los bits etiquetados con \textit{Modo} y \textit{Desplazamiento} son los que permiten seleccionar la función del fondo configurado en el registro \textit{REG\_DISPCNT}. Por su parte el \textit{bit 7} es el que permite activar el correspondiente \textit{banco VRAM}.
 
-\begin{figure}[t]
+\begin{figure}[!t]
 \centering
 \includegraphics[height=4cm]{Figuras/C5/c5_reg_vram1.png}
 \caption{Significado de los bits del registro \textit{VRAM\_?\_CR}}

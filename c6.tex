@@ -59,7 +59,7 @@ Una vez especificado el modo y habilitada la zona de memoria donde se escribirá
 \label{sec:p2_c3_imagenes}
 El modo framebuffer no utiliza fondos ni motor de renderizado, por lo que la única tarea a realizar para mostrar una imagen es transferir al banco de memoria correspondiente los datos del gráfico a mostrar. Para ello, será necesario convertir esa imagen en un mapa de bits.
 
-La conversión de imágenes se realiza con la herramienta \textit{grit}, que ya viene integrada en \textit{devkitPro}. En concreto, el comando \textit{grit} se encuentra en el directorio \textit{devkitPro/devkitARM/bin/grit.exe}. Por ejemplo, para convertir la imagen \textit{imagen.png} al formato que se necesita, se deberá ejecutar la siguiente orden:
+La conversión de imágenes se realiza con la herramienta \textit{grit}, que ya viene integrada en \textit{devkitPro}. En concreto, el comando \textit{grit} se encuentra en el directorio \textit{devkitPro/tools/bin/grit.exe} \footnote{En versiones anteriores se encontraba en \textit{devkitPro/devkitARM/bin/grit.exe}}. Por ejemplo, para convertir la imagen \textit{imagen.png} al formato que se necesita, se deberá ejecutar la siguiente orden:
 
 \begin{verbatim}
 grit imagen.png -gb -gB16
@@ -127,7 +127,7 @@ int main (void)
 	while (1)
 	{
 		scanKeys();
-		int held=keysHeld();
+		int held=keysUp();
 		
 		if (held & KEY_A)
 		{
